@@ -1,0 +1,640 @@
+<mxfile host="app.diagrams.net" agent="Antigravity/ESP32-AI-Flowchart">
+  <diagram id="diagram_esp32_smart_plant_flowchart" name="Lưu đồ thuật toán Hệ thống trồng cây thông minh ESP32 + AI">
+    <mxGraphModel dx="2939" dy="1988" grid="1" gridSize="10" guides="1" tooltips="1" connect="1" arrows="1" fold="1" page="1" pageScale="1" pageWidth="2860" pageHeight="3240" background="#F8FAFC" math="0" shadow="0">
+      <root>
+        <mxCell id="0" />
+        <mxCell id="1" parent="0" />
+        <mxCell id="TOP_HEADER" parent="1" style="rounded=1;arcSize=6;fillColor=#0F172A;strokeColor=#1E293B;fontColor=#FFFFFF;align=center;verticalAlign=middle;html=1;shadow=1;" value="&lt;div style=&quot;line-height:1.4;&quot;&gt;     &lt;span style=&quot;font-size:22px; font-weight:800; color:#FFFFFF; letter-spacing:0.5px;&quot;&gt;HỆ THỐNG GIÁM SÁT MÔI TRƯỜNG VÀ CHĂM SÓC CÂY TRỒNG THÔNG MINH SỬ DỤNG ESP32 KẾT HỢP AI CHATBOT&lt;/span&gt;&lt;br/&gt;     &lt;span style=&quot;font-size:13.5px; font-weight:600; color:#38BDF8; letter-spacing:0.3px;&quot;&gt;LƯU ĐỒ THUẬT TOÁN KỸ THUẬT TỔNG THỂ (ESP32 EMBEDDED CONTROL &amp;amp; CLOUD AI MULTI-SUBSYSTEM FLOWCHART)&lt;/span&gt;&lt;br/&gt;     &lt;span style=&quot;font-size:11.5px; color:#CBD5E1;&quot;&gt;Bộ điều khiển trung tâm: &lt;b&gt;ESP32 Dual-Core&lt;/b&gt; | Cảm biến: &lt;b&gt;Độ ẩm đất (ADC), Ánh sáng, Không khí (AQI), Gia tốc (MPU6050), Nhiệt độ &amp;amp; Áp suất, Mực nước, Mic&lt;/b&gt; | Đầu ra: &lt;b&gt;Bơm 5V, 2x OLED 0.96&amp;quot;, Loa&lt;/b&gt; | Nền tảng: &lt;b&gt;Wi-Fi, Cloud DB, AI Chatbot (STT/LLM/TTS), Mobile App&lt;/b&gt;&lt;/span&gt;   &lt;/div&gt;" vertex="1">
+          <mxGeometry height="105" width="2750" x="50" y="35" as="geometry" />
+        </mxCell>
+        <mxCell id="P1_CONTAINER" parent="1" style="rounded=1;arcSize=4;fillColor=#F8FAFC;strokeColor=#475569;strokeWidth=2;dashed=0;html=1;shadow=0;" value="" vertex="1">
+          <mxGeometry height="1550" width="830" x="50" y="170" as="geometry" />
+        </mxCell>
+        <mxCell id="P1_HEADER" parent="1" style="rounded=1;arcSize=4;fillColor=#1E293B;strokeColor=#0F172A;fontColor=#FFFFFF;fontStyle=1;fontSize=13;align=center;verticalAlign=middle;html=1;" value="PHÂN HỆ 1: KHỞI TẠO HỆ THỐNG (SYSTEM INITIALIZATION)" vertex="1">
+          <mxGeometry height="45" width="830" x="50" y="170" as="geometry" />
+        </mxCell>
+        <mxCell id="P1_START" parent="1" style="rounded=1;arcSize=50;fillColor=#10B981;strokeColor=#059669;fontColor=#FFFFFF;fontStyle=1;align=center;verticalAlign=middle;html=1;fontSize=12;shadow=1;" value="&lt;b&gt;BẮT ĐẦU (START)&lt;/b&gt;&lt;br/&gt;Cấp nguồn cho toàn hệ thống (5V DC Adapter / Pin)" vertex="1">
+          <mxGeometry height="55" width="420" x="255" y="235" as="geometry" />
+        </mxCell>
+        <mxCell id="P1_BOOT" parent="1" style="rounded=1;arcSize=8;fillColor=#FFFFFF;strokeColor=#94A3B8;strokeWidth=1.5;fontColor=#0F172A;align=center;verticalAlign=middle;html=1;fontSize=11.5;" value="&lt;b&gt;ESP32 Khởi động (Bootloader)&lt;/b&gt;&lt;br/&gt;Nạp cấu hình Flash, khởi tạo hệ điều hành thời gian thực FreeRTOS" vertex="1">
+          <mxGeometry height="55" width="480" x="225" y="315" as="geometry" />
+        </mxCell>
+        <mxCell id="P1_PERIPH" parent="1" style="rounded=1;arcSize=8;fillColor=#FFFFFF;strokeColor=#94A3B8;strokeWidth=1.5;fontColor=#0F172A;align=center;verticalAlign=middle;html=1;fontSize=11.5;" value="&lt;b&gt;Khởi tạo các Chân GPIO &amp;amp; Giao tiếp Ngoại vi cần thiết:&lt;/b&gt;&lt;br/&gt; • &lt;b&gt;GPIO / PWM:&lt;/b&gt; Chân điều khiển Relay/MOSFET Bơm 5V, Status LED&lt;br/&gt; • &lt;b&gt;ADC 12-bit (0 - 4095):&lt;/b&gt; Cảm biến độ ẩm đất, Cảm biến mực nước&lt;br/&gt; • &lt;b&gt;I2C Bus:&lt;/b&gt; 2x OLED 0.96&amp;quot; (0x3C, 0x3D), BMP280, MPU6050, BH1750&lt;br/&gt; • &lt;b&gt;I2S / DAC / UART:&lt;/b&gt; Microphone INMP441, Mạch khuếch đại Loa Audio" vertex="1">
+          <mxGeometry height="95" width="560" x="185" y="395" as="geometry" />
+        </mxCell>
+        <mxCell id="P1_SENSORS" parent="1" style="rounded=1;arcSize=8;fillColor=#FFFFFF;strokeColor=#94A3B8;strokeWidth=1.5;fontColor=#0F172A;align=center;verticalAlign=middle;html=1;fontSize=11.5;" value="&lt;b&gt;Khởi tạo &amp;amp; Cấu hình 6 Cảm biến đầu vào:&lt;/b&gt;&lt;br/&gt; 1. Cảm biến độ ẩm đất (Soil Moisture ADC)&lt;br/&gt; 2. Cảm biến ánh sáng (Light Sensor Lux)&lt;br/&gt; 3. Cảm biến chất lượng không khí (Air Sensor AQI/PPM)&lt;br/&gt; 4. Cảm biến gia tốc MPU6050 (Trục X, Y, Z)&lt;br/&gt; 5. Cảm biến nhiệt độ &amp;amp; áp suất (BMP280 / BME280)&lt;br/&gt; 6. Cảm biến mực nước bình chứa (Water Level ADC/Digital)&lt;br/&gt; &lt;i&gt;+ Microphone thu nhận âm thanh giọng nói&lt;/i&gt;" vertex="1">
+          <mxGeometry height="130" width="560" x="185" y="515" as="geometry" />
+        </mxCell>
+        <mxCell id="P1_ACTUATORS" parent="1" style="rounded=1;arcSize=8;fillColor=#FFFFFF;strokeColor=#94A3B8;strokeWidth=1.5;fontColor=#0F172A;align=center;verticalAlign=middle;html=1;fontSize=11.5;" value="&lt;b&gt;Khởi tạo 4 Thiết bị đầu ra (Cơ cấu chấp hành):&lt;/b&gt;&lt;br/&gt; 1. OLED 0.96&amp;quot; số 1 (Hiển thị Mắt Trái - Địa chỉ I2C 0x3C)&lt;br/&gt; 2. OLED 0.96&amp;quot; số 2 (Hiển thị Mắt Phải - Địa chỉ I2C 0x3D)&lt;br/&gt; 3. Mạch khuếch đại âm thanh &amp;amp; Loa (Phát âm thanh AI Chatbot)&lt;br/&gt; 4. Relay / MOSFET điều khiển Bơm mini 5V (Trạng thái mặc định: &lt;b&gt;OFF&lt;/b&gt;)" vertex="1">
+          <mxGeometry height="90" width="560" x="185" y="670" as="geometry" />
+        </mxCell>
+        <mxCell id="P1_CHECK_HW" parent="1" style="rhombus;whiteSpace=wrap;html=1;fillColor=#FEF08A;strokeColor=#CA8A04;strokeWidth=2;fontColor=#854D0E;fontStyle=1;align=center;verticalAlign=middle;fontSize=11;" value="&lt;b&gt;Các cảm biến &amp;amp; thiết bị&lt;br/&gt;có hoạt động bình thường?&lt;/b&gt;&lt;br/&gt;(Self-test phần cứng)" vertex="1">
+          <mxGeometry height="85" width="360" x="285" y="785" as="geometry" />
+        </mxCell>
+        <mxCell id="P1_HW_ERR" parent="1" style="rounded=1;arcSize=8;fillColor=#FEF3C7;strokeColor=#D97706;strokeWidth=2;fontColor=#92400E;align=center;verticalAlign=middle;html=1;fontSize=11;" value="&lt;b&gt;XỬ LÝ LỖI PHẦN CỨNG:&lt;/b&gt;&lt;br/&gt; • Ghi nhận mã lỗi cảm biến vào Flash/EEPROM&lt;br/&gt; • OLED hiển thị icon cảnh báo [!]&lt;br/&gt; • Gửi log cảnh báo lỗi lên Cloud (nếu có mạng)&lt;br/&gt; • Duy trì giám sát các cảm biến còn hoạt động được (Degraded Mode)" vertex="1">
+          <mxGeometry height="110" width="255" x="605" y="890" as="geometry" />
+        </mxCell>
+        <mxCell id="P1_INIT_WIFI" parent="1" style="rounded=1;arcSize=8;fillColor=#FFFFFF;strokeColor=#94A3B8;strokeWidth=1.5;fontColor=#0F172A;align=center;verticalAlign=middle;html=1;fontSize=11.5;" value="&lt;b&gt;Khởi tạo kết nối Wi-Fi Station (ESP32 Wi-Fi Stack)&lt;/b&gt;&lt;br/&gt;Thử kết nối Access Point theo SSID/Password cấu hình (Timeout: 10s)" vertex="1">
+          <mxGeometry height="60" width="540" x="195" y="1020" as="geometry" />
+        </mxCell>
+        <mxCell id="P1_WIFI_DEC" parent="1" style="rhombus;whiteSpace=wrap;html=1;fillColor=#FEF08A;strokeColor=#CA8A04;strokeWidth=2;fontColor=#854D0E;fontStyle=1;align=center;verticalAlign=middle;fontSize=11;" value="&lt;b&gt;Wi-Fi có kết nối&lt;br/&gt;thành công không?&lt;/b&gt;" vertex="1">
+          <mxGeometry height="80" width="340" x="295" y="1105" as="geometry" />
+        </mxCell>
+        <mxCell id="P1_WIFI_YES" parent="1" style="rounded=1;arcSize=8;fillColor=#DCFCE7;strokeColor=#16A34A;strokeWidth=2;fontColor=#166534;align=center;verticalAlign=middle;html=1;fontSize=11;fontStyle=1;" value="&lt;b&gt;NHÁNH YES: Chế độ Online (isOnline = TRUE)&lt;/b&gt;&lt;br/&gt; • Đồng bộ thời gian thực qua máy chủ NTP&lt;br/&gt; • Kết nối Cloud Server / Database (MQTT/HTTPS)&lt;br/&gt; • Đồng bộ cấu hình ngưỡng và trạng thái thiết bị ban đầu" vertex="1">
+          <mxGeometry height="90" width="360" x="75" y="1215" as="geometry" />
+        </mxCell>
+        <mxCell id="P1_WIFI_NO" parent="1" style="rounded=1;arcSize=8;fillColor=#FEF3C7;strokeColor=#D97706;strokeWidth=2;fontColor=#92400E;align=center;verticalAlign=middle;html=1;fontSize=11;" value="&lt;b&gt;NHÁNH NO: Chế độ Offline (isOnline = FALSE)&lt;/b&gt;&lt;br/&gt; • OLED hiển thị biểu tượng Offline [Wi-Fi X]&lt;br/&gt; • Chuyển sang chế độ tự hành cục bộ&lt;br/&gt; • Đảm bảo ESP32 tự điều khiển tưới &amp;amp; OLED độc lập" vertex="1">
+          <mxGeometry height="90" width="370" x="485" y="1215" as="geometry" />
+        </mxCell>
+        <mxCell id="P1_INIT_DONE" parent="1" style="rounded=1;arcSize=8;fillColor=#FFFFFF;strokeColor=#94A3B8;strokeWidth=1.5;fontColor=#0F172A;align=center;verticalAlign=middle;html=1;fontSize=11.5;" value="&lt;b&gt;Khởi tạo hoàn tất! Thiết lập bộ định thời (FreeRTOS Timers)&lt;/b&gt;&lt;br/&gt;Kích hoạt các Task định kỳ: Đọc cảm biến, Tưới tự động, Hiển thị OLED" vertex="1">
+          <mxGeometry height="65" width="540" x="195" y="1335" as="geometry" />
+        </mxCell>
+        <mxCell id="P1_GOTO_LOOP" parent="1" style="rounded=1;arcSize=50;fillColor=#2563EB;strokeColor=#1D4ED8;fontColor=#FFFFFF;fontStyle=1;align=center;verticalAlign=middle;html=1;fontSize=12;shadow=1;" value="&lt;b&gt;CHUYỂN ĐẾN VÒNG LẶP CHÍNH (MAIN LOOP)&lt;/b&gt;&lt;br/&gt;➔ Bàn giao quyền điều khiển sang &lt;b&gt;PHÂN HỆ 2&lt;/b&gt;" vertex="1">
+          <mxGeometry height="65" width="460" x="235" y="1430" as="geometry" />
+        </mxCell>
+        <mxCell id="edge_2" edge="1" parent="1" source="P1_START" style="edgeStyle=orthogonalEdgeStyle;rounded=1;orthogonalLoop=1;jettySize=auto;html=1;strokeColor=#475569;strokeWidth=1.8;fontColor=#1E293B;fontSize=11;" target="P1_BOOT" value="">
+          <mxGeometry relative="1" as="geometry" />
+        </mxCell>
+        <mxCell id="edge_3" edge="1" parent="1" source="P1_BOOT" style="edgeStyle=orthogonalEdgeStyle;rounded=1;orthogonalLoop=1;jettySize=auto;html=1;strokeColor=#475569;strokeWidth=1.8;fontColor=#1E293B;fontSize=11;" target="P1_PERIPH" value="">
+          <mxGeometry relative="1" as="geometry" />
+        </mxCell>
+        <mxCell id="edge_4" edge="1" parent="1" source="P1_PERIPH" style="edgeStyle=orthogonalEdgeStyle;rounded=1;orthogonalLoop=1;jettySize=auto;html=1;strokeColor=#475569;strokeWidth=1.8;fontColor=#1E293B;fontSize=11;" target="P1_SENSORS" value="">
+          <mxGeometry relative="1" as="geometry" />
+        </mxCell>
+        <mxCell id="edge_5" edge="1" parent="1" source="P1_SENSORS" style="edgeStyle=orthogonalEdgeStyle;rounded=1;orthogonalLoop=1;jettySize=auto;html=1;strokeColor=#475569;strokeWidth=1.8;fontColor=#1E293B;fontSize=11;" target="P1_ACTUATORS" value="">
+          <mxGeometry relative="1" as="geometry" />
+        </mxCell>
+        <mxCell id="edge_6" edge="1" parent="1" source="P1_ACTUATORS" style="edgeStyle=orthogonalEdgeStyle;rounded=1;orthogonalLoop=1;jettySize=auto;html=1;strokeColor=#475569;strokeWidth=1.8;fontColor=#1E293B;fontSize=11;" target="P1_CHECK_HW" value="">
+          <mxGeometry relative="1" as="geometry" />
+        </mxCell>
+        <mxCell id="edge_7" edge="1" parent="1" source="P1_CHECK_HW" style="edgeStyle=orthogonalEdgeStyle;rounded=1;orthogonalLoop=1;jettySize=auto;html=1;strokeColor=#DC2626;strokeWidth=2;fontColor=#B91C1C;fontStyle=1;fontSize=11;exitX=1;exitDx=0;exitDy=0;exitY=0.5;exitDx=0;exitDy=0;entryX=0.5;entryDx=0;entryDy=0;entryY=0;entryDx=0;entryDy=0;" target="P1_HW_ERR" value="NO (Lỗi)">
+          <mxGeometry relative="1" as="geometry" />
+        </mxCell>
+        <mxCell id="edge_8" edge="1" parent="1" source="P1_CHECK_HW" style="edgeStyle=orthogonalEdgeStyle;rounded=1;orthogonalLoop=1;jettySize=auto;html=1;strokeColor=#16A34A;strokeWidth=2;fontColor=#15803D;fontStyle=1;fontSize=11;exitX=0.5;exitDx=0;exitDy=0;exitY=1;exitDx=0;exitDy=0;entryX=0.5;entryDx=0;entryDy=0;entryY=0;entryDx=0;entryDy=0;" target="P1_INIT_WIFI" value="YES (Bình thường)">
+          <mxGeometry relative="1" as="geometry" />
+        </mxCell>
+        <mxCell id="edge_9" edge="1" parent="1" source="P1_HW_ERR" style="edgeStyle=orthogonalEdgeStyle;rounded=1;orthogonalLoop=1;jettySize=auto;html=1;strokeColor=#475569;strokeWidth=1.8;fontColor=#1E293B;fontSize=11;exitX=0.5;exitDx=0;exitDy=0;exitY=1;exitDx=0;exitDy=0;entryX=0.8;entryDx=0;entryDy=0;entryY=0;entryDx=0;entryDy=0;" target="P1_INIT_WIFI" value="Tiếp tục giám sát">
+          <mxGeometry relative="1" as="geometry" />
+        </mxCell>
+        <mxCell id="edge_10" edge="1" parent="1" source="P1_INIT_WIFI" style="edgeStyle=orthogonalEdgeStyle;rounded=1;orthogonalLoop=1;jettySize=auto;html=1;strokeColor=#475569;strokeWidth=1.8;fontColor=#1E293B;fontSize=11;" target="P1_WIFI_DEC" value="">
+          <mxGeometry relative="1" as="geometry" />
+        </mxCell>
+        <mxCell id="edge_11" edge="1" parent="1" source="P1_WIFI_DEC" style="edgeStyle=orthogonalEdgeStyle;rounded=1;orthogonalLoop=1;jettySize=auto;html=1;strokeColor=#16A34A;strokeWidth=2;fontColor=#15803D;fontStyle=1;fontSize=11;exitX=0;exitDx=0;exitDy=0;exitY=0.5;exitDx=0;exitDy=0;entryX=0.5;entryDx=0;entryDy=0;entryY=0;entryDx=0;entryDy=0;" target="P1_WIFI_YES" value="YES (Thành công)">
+          <mxGeometry relative="1" as="geometry" />
+        </mxCell>
+        <mxCell id="edge_12" edge="1" parent="1" source="P1_WIFI_DEC" style="edgeStyle=orthogonalEdgeStyle;rounded=1;orthogonalLoop=1;jettySize=auto;html=1;strokeColor=#DC2626;strokeWidth=2;fontColor=#B91C1C;fontStyle=1;fontSize=11;exitX=1;exitDx=0;exitDy=0;exitY=0.5;exitDx=0;exitDy=0;entryX=0.5;entryDx=0;entryDy=0;entryY=0;entryDx=0;entryDy=0;" target="P1_WIFI_NO" value="NO (Mất mạng)">
+          <mxGeometry relative="1" as="geometry" />
+        </mxCell>
+        <mxCell id="edge_13" edge="1" parent="1" source="P1_WIFI_YES" style="edgeStyle=orthogonalEdgeStyle;rounded=1;orthogonalLoop=1;jettySize=auto;html=1;strokeColor=#475569;strokeWidth=1.8;fontColor=#1E293B;fontSize=11;exitX=0.5;exitDx=0;exitDy=0;exitY=1;exitDx=0;exitDy=0;entryX=0.2;entryDx=0;entryDy=0;entryY=0;entryDx=0;entryDy=0;" target="P1_INIT_DONE" value="">
+          <mxGeometry relative="1" as="geometry" />
+        </mxCell>
+        <mxCell id="edge_14" edge="1" parent="1" source="P1_WIFI_NO" style="edgeStyle=orthogonalEdgeStyle;rounded=1;orthogonalLoop=1;jettySize=auto;html=1;strokeColor=#475569;strokeWidth=1.8;fontColor=#1E293B;fontSize=11;exitX=0.5;exitDx=0;exitDy=0;exitY=1;exitDx=0;exitDy=0;entryX=0.8;entryDx=0;entryDy=0;entryY=0;entryDx=0;entryDy=0;" target="P1_INIT_DONE" value="">
+          <mxGeometry relative="1" as="geometry" />
+        </mxCell>
+        <mxCell id="edge_15" edge="1" parent="1" source="P1_INIT_DONE" style="edgeStyle=orthogonalEdgeStyle;rounded=1;orthogonalLoop=1;jettySize=auto;html=1;strokeColor=#475569;strokeWidth=1.8;fontColor=#1E293B;fontSize=11;" target="P1_GOTO_LOOP" value="">
+          <mxGeometry relative="1" as="geometry" />
+        </mxCell>
+        <mxCell id="P2_CONTAINER" parent="1" style="rounded=1;arcSize=4;fillColor=#F0FDFA;strokeColor=#0D9488;strokeWidth=2;dashed=0;html=1;shadow=0;" value="" vertex="1">
+          <mxGeometry height="1550" width="920" x="940" y="200" as="geometry" />
+        </mxCell>
+        <mxCell id="P2_HEADER" parent="1" style="rounded=1;arcSize=4;fillColor=#0F766E;strokeColor=#115E59;fontColor=#FFFFFF;fontStyle=1;fontSize=13;align=center;verticalAlign=middle;html=1;" value="PHÂN HỆ 2: THU THẬP VÀ XỬ LÝ DỮ LIỆU CẢM BIẾN (DATA ACQUISITION &amp;amp; PROCESSING)" vertex="1">
+          <mxGeometry height="45" width="920" x="920" y="170" as="geometry" />
+        </mxCell>
+        <mxCell id="P2_LOOP_ENTRY" parent="1" style="rounded=1;arcSize=50;fillColor=#10B981;strokeColor=#059669;fontColor=#FFFFFF;fontStyle=1;align=center;verticalAlign=middle;html=1;fontSize=12;shadow=1;" value="&lt;b&gt;Bắt đầu Vòng lặp đọc dữ liệu cảm biến định kỳ&lt;/b&gt;&lt;br/&gt;(ESP32 FreeRTOS Task chu kỳ T = 2 - 5 giây)" vertex="1">
+          <mxGeometry height="55" width="500" x="1130" y="235" as="geometry" />
+        </mxCell>
+        <mxCell id="P2_READ_SENSORS" parent="1" style="shape=process;whiteSpace=wrap;html=1;backgroundOutline=1;rounded=1;arcSize=8;fillColor=#F1F5F9;strokeColor=#64748B;strokeWidth=1.5;fontColor=#0F172A;fontSize=11.5;" value="&lt;b&gt;ESP32 Đọc dữ liệu từ các cảm biến đầu vào:&lt;/b&gt;&lt;br/&gt; • &lt;b&gt;Soil Moisture:&lt;/b&gt; Đọc ADC độ ẩm đất (0 - 4095)&lt;br/&gt; • &lt;b&gt;Light Sensor:&lt;/b&gt; Đọc cường độ ánh sáng môi trường (Lux)&lt;br/&gt; • &lt;b&gt;Air Sensor:&lt;/b&gt; Đọc chỉ số chất lượng không khí (AQI / PPM)&lt;br/&gt; • &lt;b&gt;Accelerometer:&lt;/b&gt; Đọc gia tốc 3 trục X, Y, Z (MPU6050)&lt;br/&gt; • &lt;b&gt;Temp &amp;amp; Pressure:&lt;/b&gt; Đọc nhiệt độ (°C) và áp suất môi trường (hPa)&lt;br/&gt; • &lt;b&gt;Water Level:&lt;/b&gt; Đọc mức nước trong bình chứa (ADC / Digital)&lt;br/&gt; • &lt;b&gt;Microphone:&lt;/b&gt; Lắng nghe liên tục tín hiệu âm thanh môi trường" vertex="1">
+          <mxGeometry height="145" width="700" x="1030" y="315" as="geometry" />
+        </mxCell>
+        <mxCell id="P2_FILTER" parent="1" style="rounded=1;arcSize=8;fillColor=#FFFFFF;strokeColor=#5EEAD4;strokeWidth=1.5;fontColor=#0F172A;align=center;verticalAlign=middle;html=1;fontSize=11.5;" value="&lt;b&gt;Lọc nhiễu &amp;amp; Tiền xử lý dữ liệu cảm biến:&lt;/b&gt;&lt;br/&gt; • Thuật toán lọc trung bình động (Moving Average Filter) làm mượt tín hiệu ADC&lt;br/&gt; • Tính vector gia tốc tổng hợp: &lt;i&gt;a = √(X² + Y² + Z²)&lt;/i&gt; (Phát hiện rung lắc / va đập)&lt;br/&gt; • Tính góc nghiêng chậu cây: &lt;i&gt;Tilt = atan2(Y, Z)&lt;/i&gt; (Phát hiện nghiêng đổ)" vertex="1">
+          <mxGeometry height="85" width="660" x="1050" y="485" as="geometry" />
+        </mxCell>
+        <mxCell id="P2_VALID_DEC" parent="1" style="rhombus;whiteSpace=wrap;html=1;fillColor=#FEF08A;strokeColor=#CA8A04;strokeWidth=2;fontColor=#854D0E;fontStyle=1;align=center;verticalAlign=middle;fontSize=11;" value="&lt;b&gt;Dữ liệu cảm biến&lt;br/&gt;có hợp lệ không?&lt;/b&gt;&lt;br/&gt;(Trong dải đo vật lý)" vertex="1">
+          <mxGeometry height="85" width="360" x="1200" y="595" as="geometry" />
+        </mxCell>
+        <mxCell id="P2_ERR_VAL" parent="1" style="rounded=1;arcSize=8;fillColor=#FEF3C7;strokeColor=#D97706;strokeWidth=2;fontColor=#92400E;align=center;verticalAlign=middle;html=1;fontSize=11;" value="&lt;b&gt;XỬ LÝ DỮ LIỆU DỊ THƯỜNG:&lt;/b&gt;&lt;br/&gt; • Đánh dấu cờ cảm biến lỗi &lt;code&gt;SENSOR_FAULT&lt;/code&gt;&lt;br/&gt; • Bỏ qua giá trị ngoại lai, giữ giá trị hợp lệ gần nhất&lt;br/&gt; • Kích hoạt icon cảnh báo lỗi trên OLED" vertex="1">
+          <mxGeometry height="95" width="255" x="1565" y="690" as="geometry" />
+        </mxCell>
+        <mxCell id="P2_SAVE_RAM" parent="1" style="rounded=1;arcSize=8;fillColor=#FFFFFF;strokeColor=#5EEAD4;strokeWidth=1.5;fontColor=#0F172A;align=center;verticalAlign=middle;html=1;fontSize=11.5;" value="&lt;b&gt;Lưu dữ liệu hợp lệ vào cấu trúc biến trong ESP32 RAM:&lt;/b&gt;&lt;br/&gt; Cập nhật biến toàn cục &lt;code&gt;SystemSensorsData&lt;/code&gt; (Sẵn sàng cung cấp cho các module)" vertex="1">
+          <mxGeometry height="60" width="620" x="1070" y="805" as="geometry" />
+        </mxCell>
+        <mxCell id="P2_UPDATE_ENV" parent="1" style="rounded=1;arcSize=8;fillColor=#FFFFFF;strokeColor=#5EEAD4;strokeWidth=1.5;fontColor=#0F172A;align=center;verticalAlign=middle;html=1;fontSize=11.5;" value="&lt;b&gt;Cập nhật trạng thái môi trường cây trồng:&lt;/b&gt;&lt;br/&gt; Ghi nhận vào biến &lt;code&gt;PlantEnvironmentState&lt;/code&gt; (Đánh giá sức khỏe sinh học cây)" vertex="1">
+          <mxGeometry height="55" width="560" x="1100" y="890" as="geometry" />
+        </mxCell>
+        <mxCell id="P2_ANALYZE_CONDITIONS" parent="1" style="rounded=1;arcSize=8;fillColor=#FFFFFF;strokeColor=#5EEAD4;strokeWidth=1.5;fontColor=#0F172A;align=center;verticalAlign=middle;html=1;fontSize=11.5;" value="&lt;b&gt;Phân tích &amp;amp; Đánh giá 6 Điều kiện môi trường cây trồng:&lt;/b&gt;&lt;br/&gt; 1. &lt;b&gt;Độ ẩm đất:&lt;/b&gt; Đất có đủ độ ẩm không? (So sánh ADC với ngưỡng quy ước 1100)&lt;br/&gt; 2. &lt;b&gt;Ánh sáng:&lt;/b&gt; Cường độ ánh sáng có phù hợp cho cây quang hợp không?&lt;br/&gt; 3. &lt;b&gt;Nhiệt độ &amp;amp; Áp suất:&lt;/b&gt; Có quá nóng (&amp;gt;35°C) hoặc quá lạnh (&amp;lt;15°C) không?&lt;br/&gt; 4. &lt;b&gt;Chất lượng không khí:&lt;/b&gt; Có bất thường không? (Khói, khí gas ô nhiễm)&lt;br/&gt; 5. &lt;b&gt;Bình chứa nước:&lt;/b&gt; Còn đủ lượng nước an toàn để thực hiện tưới không?&lt;br/&gt; 6. &lt;b&gt;Vị trí chậu cây:&lt;/b&gt; Có bị rung lắc mạnh hoặc nghiêng đổ bất thường không? (MPU6050)" vertex="1">
+          <mxGeometry height="145" width="700" x="1030" y="970" as="geometry" />
+        </mxCell>
+        <mxCell id="P2_DISPATCHER" parent="1" style="rounded=1;arcSize=6;fillColor=#0F766E;strokeColor=#115E59;fontColor=#FFFFFF;fontStyle=1;align=center;verticalAlign=middle;html=1;fontSize=11.5;shadow=1;" value="&lt;b&gt;BỘ ĐIỀU PHỐI DỮ LIỆU TRUNG TÂM ESP32 (DATA DISPATCHER):&lt;/b&gt;&lt;br/&gt; Phân phối tức thời dữ liệu sạch và các cờ phân tích tới các phân hệ:&lt;br/&gt; ➔ &lt;b&gt;Phân hệ 3 (Tưới tự động):&lt;/b&gt; Cung cấp Soil ADC và Water Level để quyết định tưới&lt;br/&gt; ➔ &lt;b&gt;Phân hệ 4 (Biểu cảm OLED):&lt;/b&gt; Cung cấp Temp, Light, Soil, Tilt để chọn cảm xúc&lt;br/&gt; ➔ &lt;b&gt;Phân hệ 6 (Cloud &amp;amp; Mobile App):&lt;/b&gt; Cung cấp toàn bộ Telemetry đóng gói JSON" vertex="1">
+          <mxGeometry height="110" width="720" x="1020" y="1145" as="geometry" />
+        </mxCell>
+        <mxCell id="P2_WAIT_NEXT" parent="1" style="rounded=1;arcSize=8;fillColor=#FFFFFF;strokeColor=#5EEAD4;strokeWidth=1.5;fontColor=#0F172A;align=center;verticalAlign=middle;html=1;fontSize=11.5;" value="&lt;b&gt;Chờ chu kỳ đo tiếp theo (Timer Delay T = 2 - 5 giây)&lt;/b&gt;&lt;br/&gt;Đảm bảo hệ thống vận hành định kỳ liên tục" vertex="1">
+          <mxGeometry height="55" width="460" x="1150" y="1285" as="geometry" />
+        </mxCell>
+        <mxCell id="edge_16" edge="1" parent="1" source="P2_LOOP_ENTRY" style="edgeStyle=orthogonalEdgeStyle;rounded=1;orthogonalLoop=1;jettySize=auto;html=1;strokeColor=#475569;strokeWidth=1.8;fontColor=#1E293B;fontSize=11;" target="P2_READ_SENSORS" value="">
+          <mxGeometry relative="1" as="geometry" />
+        </mxCell>
+        <mxCell id="edge_17" edge="1" parent="1" source="P2_READ_SENSORS" style="edgeStyle=orthogonalEdgeStyle;rounded=1;orthogonalLoop=1;jettySize=auto;html=1;strokeColor=#475569;strokeWidth=1.8;fontColor=#1E293B;fontSize=11;" target="P2_FILTER" value="">
+          <mxGeometry relative="1" as="geometry" />
+        </mxCell>
+        <mxCell id="edge_18" edge="1" parent="1" source="P2_FILTER" style="edgeStyle=orthogonalEdgeStyle;rounded=1;orthogonalLoop=1;jettySize=auto;html=1;strokeColor=#475569;strokeWidth=1.8;fontColor=#1E293B;fontSize=11;" target="P2_VALID_DEC" value="">
+          <mxGeometry relative="1" as="geometry" />
+        </mxCell>
+        <mxCell id="edge_19" edge="1" parent="1" source="P2_VALID_DEC" style="edgeStyle=orthogonalEdgeStyle;rounded=1;orthogonalLoop=1;jettySize=auto;html=1;strokeColor=#DC2626;strokeWidth=2;fontColor=#B91C1C;fontStyle=1;fontSize=11;exitX=1;exitDx=0;exitDy=0;exitY=0.5;exitDx=0;exitDy=0;entryX=0.5;entryDx=0;entryDy=0;entryY=0;entryDx=0;entryDy=0;" target="P2_ERR_VAL" value="NO (Ngoại lai / Lỗi)">
+          <mxGeometry relative="1" as="geometry" />
+        </mxCell>
+        <mxCell id="edge_20" edge="1" parent="1" source="P2_VALID_DEC" style="edgeStyle=orthogonalEdgeStyle;rounded=1;orthogonalLoop=1;jettySize=auto;html=1;strokeColor=#16A34A;strokeWidth=2;fontColor=#15803D;fontStyle=1;fontSize=11;exitX=0.5;exitDx=0;exitDy=0;exitY=1;exitDx=0;exitDy=0;entryX=0.5;entryDx=0;entryDy=0;entryY=0;entryDx=0;entryDy=0;" target="P2_SAVE_RAM" value="YES (Hợp lệ)">
+          <mxGeometry relative="1" as="geometry" />
+        </mxCell>
+        <mxCell id="edge_21" edge="1" parent="1" source="P2_ERR_VAL" style="edgeStyle=orthogonalEdgeStyle;rounded=1;orthogonalLoop=1;jettySize=auto;html=1;strokeColor=#475569;strokeWidth=1.8;fontColor=#1E293B;fontSize=11;exitX=0.5;exitDx=0;exitDy=0;exitY=1;exitDx=0;exitDy=0;entryX=0.85;entryDx=0;entryDy=0;entryY=0;entryDx=0;entryDy=0;" target="P2_SAVE_RAM" value="Bỏ qua &amp; Dùng mẫu cũ">
+          <mxGeometry relative="1" as="geometry" />
+        </mxCell>
+        <mxCell id="edge_22" edge="1" parent="1" source="P2_SAVE_RAM" style="edgeStyle=orthogonalEdgeStyle;rounded=1;orthogonalLoop=1;jettySize=auto;html=1;strokeColor=#475569;strokeWidth=1.8;fontColor=#1E293B;fontSize=11;" target="P2_UPDATE_ENV" value="">
+          <mxGeometry relative="1" as="geometry" />
+        </mxCell>
+        <mxCell id="edge_23" edge="1" parent="1" source="P2_UPDATE_ENV" style="edgeStyle=orthogonalEdgeStyle;rounded=1;orthogonalLoop=1;jettySize=auto;html=1;strokeColor=#475569;strokeWidth=1.8;fontColor=#1E293B;fontSize=11;" target="P2_ANALYZE_CONDITIONS" value="">
+          <mxGeometry relative="1" as="geometry" />
+        </mxCell>
+        <mxCell id="edge_24" edge="1" parent="1" source="P2_ANALYZE_CONDITIONS" style="edgeStyle=orthogonalEdgeStyle;rounded=1;orthogonalLoop=1;jettySize=auto;html=1;strokeColor=#475569;strokeWidth=1.8;fontColor=#1E293B;fontSize=11;" target="P2_DISPATCHER" value="">
+          <mxGeometry relative="1" as="geometry" />
+        </mxCell>
+        <mxCell id="edge_25" edge="1" parent="1" source="P2_DISPATCHER" style="edgeStyle=orthogonalEdgeStyle;rounded=1;orthogonalLoop=1;jettySize=auto;html=1;strokeColor=#475569;strokeWidth=1.8;fontColor=#1E293B;fontSize=11;" target="P2_WAIT_NEXT" value="">
+          <mxGeometry relative="1" as="geometry" />
+        </mxCell>
+        <mxCell id="edge_26" edge="1" parent="1" source="P2_WAIT_NEXT" style="edgeStyle=orthogonalEdgeStyle;rounded=1;orthogonalLoop=1;jettySize=auto;html=1;strokeColor=#6366F1;strokeWidth=1.8;dashed=1;fontColor=#4338CA;fontSize=10.5;exitX=0;exitDx=0;exitDy=0;exitY=0.5;exitDx=0;exitDy=0;entryX=0;entryDx=0;entryDy=0;entryY=0.5;entryDx=0;entryDy=0;" target="P2_LOOP_ENTRY" value="Lặp chu kỳ quét mới">
+          <mxGeometry relative="1" as="geometry">
+            <Array as="points">
+              <mxPoint x="945" y="1312" />
+              <mxPoint x="945" y="262" />
+            </Array>
+          </mxGeometry>
+        </mxCell>
+        <mxCell id="P3_CONTAINER" parent="1" style="rounded=1;arcSize=4;fillColor=#F0FDF4;strokeColor=#16A34A;strokeWidth=2;dashed=0;html=1;shadow=0;" value="" vertex="1">
+          <mxGeometry height="1550" width="920" x="1880" y="170" as="geometry" />
+        </mxCell>
+        <mxCell id="P3_HEADER" parent="1" style="rounded=1;arcSize=4;fillColor=#15803D;strokeColor=#166534;fontColor=#FFFFFF;fontStyle=1;fontSize=13;align=center;verticalAlign=middle;html=1;" value="PHÂN HỆ 3: THUẬT TOÁN TƯỚI CÂY TỰ ĐỘNG (INTELLIGENT WATERING ENGINE)" vertex="1">
+          <mxGeometry height="45" width="920" x="1880" y="170" as="geometry" />
+        </mxCell>
+        <mxCell id="P3_START_EVAL" parent="1" style="rounded=1;arcSize=50;fillColor=#10B981;strokeColor=#059669;fontColor=#FFFFFF;fontStyle=1;align=center;verticalAlign=middle;html=1;fontSize=12;shadow=1;" value="&lt;b&gt;BẮT ĐẦU KIỂM TRA ĐỘ ẨM ĐẤT&lt;/b&gt;&lt;br/&gt;(Kích hoạt bởi Vòng lặp định kỳ hoặc Lệnh tưới từ AI Voice / App)" vertex="1">
+          <mxGeometry height="55" width="500" x="2090" y="235" as="geometry" />
+        </mxCell>
+        <mxCell id="P3_READ_SOIL_ADC" parent="1" style="rounded=1;arcSize=8;fillColor=#FFFFFF;strokeColor=#86EFAC;strokeWidth=1.5;fontColor=#0F172A;align=center;verticalAlign=middle;html=1;fontSize=11.5;" value="&lt;b&gt;ESP32 Đọc giá trị ADC từ cảm biến độ ẩm đất&lt;/b&gt;&lt;br/&gt;(Nhận dữ liệu đã qua lọc từ Phân hệ 2: Soil Moisture ADC)" vertex="1">
+          <mxGeometry height="55" width="520" x="2080" y="315" as="geometry" />
+        </mxCell>
+        <mxCell id="P3_DEC_1100" parent="1" style="rhombus;whiteSpace=wrap;html=1;fillColor=#FEF08A;strokeColor=#CA8A04;strokeWidth=2;fontColor=#854D0E;fontStyle=1;align=center;verticalAlign=middle;fontSize=11;" value="&lt;b&gt;Giá trị ADC có&lt;br/&gt;lớn hơn 1100 không?&lt;br/&gt;(ADC &amp;gt; 1100 ?)&lt;/b&gt;" vertex="1">
+          <mxGeometry height="85" width="380" x="2130" y="400" as="geometry" />
+        </mxCell>
+        <mxCell id="P3_YES_STOP_PUMP" parent="1" style="rounded=1;arcSize=8;fillColor=#DCFCE7;strokeColor=#16A34A;strokeWidth=2;fontColor=#166534;align=center;verticalAlign=middle;html=1;fontSize=11;fontStyle=1;" value="&lt;b&gt;NHÁNH YES: ADC &amp;gt; 1100 (ĐỦ NƯỚC)&lt;/b&gt;&lt;br/&gt; • Xác định đất đã đạt ngưỡng độ ẩm yêu cầu theo quy ước&lt;br/&gt; • Đảm bảo Tắt bơm nước hoàn toàn (Relay = LOW)" vertex="1">
+          <mxGeometry height="75" width="335" x="2445" y="505" as="geometry" />
+        </mxCell>
+        <mxCell id="P3_YES_UPDATE_STATE" parent="1" style="rounded=1;arcSize=8;fillColor=#DCFCE7;strokeColor=#16A34A;strokeWidth=2;fontColor=#166534;align=center;verticalAlign=middle;html=1;fontSize=11;fontStyle=1;" value="&lt;b&gt;Cập nhật trạng thái hệ thống:&lt;/b&gt;&lt;br/&gt; • Trạng thái cây: &lt;b&gt;ĐỦ NƯỚC (SUFFICIENT)&lt;/b&gt;&lt;br/&gt; • Reset biến đếm chu kỳ: &lt;code&gt;watering_cycles = 0&lt;/code&gt;&lt;br/&gt; • Kích hoạt OLED hiển thị biểu cảm &lt;b&gt;VUI VẺ (^ ^)&lt;/b&gt;&lt;br/&gt; • Gửi trạng thái &amp;quot;Đủ nước / Bơm tắt&amp;quot; lên Cloud &amp;amp; App" vertex="1">
+          <mxGeometry height="95" width="335" x="2445" y="600" as="geometry" />
+        </mxCell>
+        <mxCell id="P3_YES_WAIT_CYCLE" parent="1" style="rounded=1;arcSize=8;fillColor=#FFFFFF;strokeColor=#86EFAC;strokeWidth=1.5;fontColor=#0F172A;align=center;verticalAlign=middle;html=1;fontSize=11.5;" value="&lt;b&gt;Chờ chu kỳ đo tiếp theo&lt;/b&gt;&lt;br/&gt;(Chu kỳ nghỉ định kỳ 15 - 30 phút hoặc chu kỳ đọc cảm biến)" vertex="1">
+          <mxGeometry height="55" width="335" x="2445" y="715" as="geometry" />
+        </mxCell>
+        <mxCell id="P3_DEC_MAX_CYCLES" parent="1" style="rhombus;whiteSpace=wrap;html=1;fillColor=#FEF08A;strokeColor=#CA8A04;strokeWidth=2;fontColor=#854D0E;fontStyle=1;align=center;verticalAlign=middle;fontSize=11;" value="&lt;b&gt;Số chu kỳ tưới liên tiếp&lt;br/&gt;≥ GIỚI HẠN TỐI ĐA?&lt;br/&gt;(cycles ≥ MAX_CYCLES = 5 ?)&lt;/b&gt;" vertex="1">
+          <mxGeometry height="85" width="360" x="2080" y="505" as="geometry" />
+        </mxCell>
+        <mxCell id="P3_FAILSAFE_ALERT" parent="1" style="rounded=1;arcSize=8;fillColor=#FEE2E2;strokeColor=#DC2626;strokeWidth=2;fontColor=#991B1B;align=center;verticalAlign=middle;html=1;fontSize=11;fontStyle=1;" value="&lt;b&gt;CẢNH BÁO AN TOÀN - DỪNG BƠM KHẨN CẤP:&lt;/b&gt;&lt;br/&gt; • Khóa bơm nước ngay lập tức (Bơm = OFF)!&lt;br/&gt; • Bật cờ cảnh báo lỗi: &lt;code&gt;WATERING_FAULT_ERROR&lt;/code&gt;&lt;br/&gt;   (Tránh lỗi cảm biến tuột khỏi đất, đứt dây gây tưới ngập tràn)&lt;br/&gt; • OLED nhấp nháy biểu tượng cảnh báo lỗi [!]&lt;br/&gt; • Loa phát âm thanh cảnh báo lỗi tưới nước&lt;br/&gt; • Gửi thông báo khẩn cấp lên Cloud Server và Mobile App&lt;br/&gt; • Tạm dừng bơm cho đến khi người dùng kiểm tra &amp;amp; Reset" vertex="1">
+          <mxGeometry height="145" width="360" x="1905" y="610" as="geometry" />
+        </mxCell>
+        <mxCell id="P3_DEC_WATER_LEVEL" parent="1" style="rhombus;whiteSpace=wrap;html=1;fillColor=#FEF08A;strokeColor=#CA8A04;strokeWidth=2;fontColor=#854D0E;fontStyle=1;align=center;verticalAlign=middle;fontSize=11;" value="&lt;b&gt;Bình chứa còn đủ nước&lt;br/&gt;để tưới không?&lt;br/&gt;(Water Level ≥ Ngưỡng an toàn ?)&lt;/b&gt;" vertex="1">
+          <mxGeometry height="85" width="380" x="2240" y="755" as="geometry" />
+        </mxCell>
+        <mxCell id="P3_NO_WATER_ALERT" parent="1" style="rounded=1;arcSize=8;fillColor=#FEF3C7;strokeColor=#D97706;strokeWidth=2;fontColor=#92400E;align=center;verticalAlign=middle;html=1;fontSize=11;" value="&lt;b&gt;NHÁNH NO: BÌNH CHỨA HẾT NƯỚC&lt;/b&gt;&lt;br/&gt; • &lt;b&gt;KHÔNG KÍCH HOẠT BƠM!&lt;/b&gt; Đảm bảo bơm ở trạng thái OFF (LOW)&lt;br/&gt; • OLED hiển thị biểu cảm &lt;b&gt;BUỒN / KHÁT NƯỚC (T_T hoặc &amp;gt;&amp;lt;)&lt;/b&gt;&lt;br/&gt; • Loa phát thông báo giọng nói:&lt;br/&gt;   &lt;i&gt;&amp;quot;Hết nước rồi! Bạn bổ sung nước cho mình nhé!&amp;quot;&lt;/i&gt;&lt;br/&gt; • Gửi cảnh báo khẩn cấp lên Cloud Server và Mobile App&lt;br/&gt; • Chờ người dùng châm thêm nước &amp;amp; định kỳ đọc lại cảm biến" vertex="1">
+          <mxGeometry height="135" width="360" x="1900" y="800" as="geometry" />
+        </mxCell>
+        <mxCell id="P3_INC_CYCLE" parent="1" style="rounded=1;arcSize=8;fillColor=#FFFFFF;strokeColor=#86EFAC;strokeWidth=1.5;fontColor=#0F172A;align=center;verticalAlign=middle;html=1;fontSize=11.5;" value="&lt;b&gt;NHÁNH YES: Bình đủ nước &amp;amp; Sẵn sàng tưới&lt;/b&gt;&lt;br/&gt; • Tăng biến đếm: &lt;code&gt;watering_cycles = watering_cycles + 1&lt;/code&gt;&lt;br/&gt; • Kiểm tra trạng thái an toàn relay &amp;amp; nguồn điện cấp" vertex="1">
+          <mxGeometry height="60" width="480" x="2300" y="860" as="geometry" />
+        </mxCell>
+        <mxCell id="P3_PUMP_ON" parent="1" style="rounded=1;arcSize=8;fillColor=#E0E7FF;strokeColor=#4F46E5;strokeWidth=2;fontColor=#3730A3;align=center;verticalAlign=middle;html=1;fontSize=11.5;fontStyle=1;" value="&lt;b&gt;BẬT BƠM MINI 5V (Relay/MOSFET = HIGH)&lt;/b&gt;&lt;br/&gt; Bắt đầu bộ đếm thời gian Timer chính xác 3 giây" vertex="1">
+          <mxGeometry height="60" width="480" x="2120" y="940" as="geometry" />
+        </mxCell>
+        <mxCell id="P3_PUMP_RUN_3S" parent="1" style="rounded=1;arcSize=8;fillColor=#E0E7FF;strokeColor=#4F46E5;strokeWidth=2;fontColor=#3730A3;align=center;verticalAlign=middle;html=1;fontSize=11.5;fontStyle=1;" value="&lt;b&gt;BƠM HOẠT ĐỘNG TRONG ĐÚNG 3 GIÂY&lt;/b&gt;&lt;br/&gt; (Bơm nước theo từng chu kỳ định lượng 3s, tuyệt đối không chạy liên tục trong vòng lặp)" vertex="1">
+          <mxGeometry height="60" width="520" x="2080" y="1030" as="geometry" />
+        </mxCell>
+        <mxCell id="P3_PUMP_OFF" parent="1" style="rounded=1;arcSize=8;fillColor=#FEE2E2;strokeColor=#DC2626;strokeWidth=2;fontColor=#991B1B;align=center;verticalAlign=middle;html=1;fontSize=11;fontStyle=1;" value="&lt;b&gt;HẾT 3 GIÂY: TẮT BƠM HOÀN TOÀN!&lt;/b&gt;&lt;br/&gt; (Relay/MOSFET = LOW - Ngắt dứt điểm dòng điện cấp cho bơm)" vertex="1">
+          <mxGeometry height="60" width="480" x="2080" y="1130" as="geometry" />
+        </mxCell>
+        <mxCell id="P3_WAIT_SOAK" parent="1" style="rounded=1;arcSize=8;fillColor=#FFFFFF;strokeColor=#86EFAC;strokeWidth=1.5;fontColor=#0F172A;align=center;verticalAlign=middle;html=1;fontSize=11.5;" value="&lt;b&gt;CHỜ KHOẢNG 1 – 2 GIÂY TRỄ NGẤM NƯỚC:&lt;/b&gt;&lt;br/&gt; • Để nước tưới ngấm đều vào các mao quản đất và vùng rễ cây&lt;br/&gt; • Để điện áp cảm biến độ ẩm đất ADC ổn định, tránh sai số do nước bề mặt" vertex="1">
+          <mxGeometry height="70" width="540" x="2030" y="1230" as="geometry" />
+        </mxCell>
+        <mxCell id="P3_REREAD_ADC" parent="1" style="rounded=1;arcSize=8;fillColor=#FFFFFF;strokeColor=#86EFAC;strokeWidth=1.5;fontColor=#0F172A;align=center;verticalAlign=middle;html=1;fontSize=11.5;" value="&lt;b&gt;ĐỌC LẠI ADC ĐỘ ẨM ĐẤT TỪ CẢM BIẾN SAU KHI TƯỚI&lt;/b&gt;&lt;br/&gt;(Lấy giá trị ADC mới nhất từ Phân hệ 2 để so sánh)" vertex="1">
+          <mxGeometry height="55" width="500" x="2050" y="1340" as="geometry" />
+        </mxCell>
+        <mxCell id="P3_DEC_RECHECK_1100" parent="1" style="rhombus;whiteSpace=wrap;html=1;fillColor=#FEF08A;strokeColor=#CA8A04;strokeWidth=2;fontColor=#854D0E;fontStyle=1;align=center;verticalAlign=middle;fontSize=11;" value="&lt;b&gt;Giá trị ADC đọc lại&lt;br/&gt;có &amp;gt; 1100 không?&lt;/b&gt;" vertex="1">
+          <mxGeometry height="85" width="360" x="2120" y="1430" as="geometry" />
+        </mxCell>
+        <mxCell id="P3_SPECIAL_REQUIREMENTS" parent="1" style="shape=note;whiteSpace=wrap;html=1;size=14;verticalAlign=top;align=left;spacingLeft=8;spacingTop=6;fillColor=#FFFBEB;strokeColor=#F59E0B;strokeWidth=1.5;fontColor=#78350F;fontSize=11;" value="&lt;b&gt;YÊU CẦU ĐẶC BIỆT CỦA THUẬT TOÁN TƯỚI NƯỚC:&lt;/b&gt;&lt;br/&gt; ✓ &lt;b&gt;Chu kỳ chuẩn 3s:&lt;/b&gt; Bơm chỉ được hoạt động theo từng xung 3 giây định lượng.&lt;br/&gt; ✓ &lt;b&gt;Bắt buộc tắt bơm:&lt;/b&gt; Sau mỗi 3s phải tắt bơm và chờ 1-2s ngấm trước khi đo lại.&lt;br/&gt; ✓ &lt;b&gt;Chống tưới liên tục:&lt;/b&gt; Tuyệt đối không để bơm chạy liên tục trong vòng lặp vô hạn.&lt;br/&gt; ✓ &lt;b&gt;Bảo vệ cạn nước:&lt;/b&gt; Phải kiểm tra cảm biến mực nước trước mỗi lần bật bơm.&lt;br/&gt; ✓ &lt;b&gt;Hoạt động Offline:&lt;/b&gt; Mất kết nối Internet, tưới tự động vẫn chạy 100% bình thường.&lt;br/&gt; ✓ &lt;b&gt;Cơ chế an toàn tối đa:&lt;/b&gt; Giới hạn 5 chu kỳ liên tiếp để phát hiện hỏng cảm biến." vertex="1">
+          <mxGeometry height="140" width="640" x="1980" y="1540" as="geometry" />
+        </mxCell>
+        <mxCell id="edge_27" edge="1" parent="1" source="P3_START_EVAL" style="edgeStyle=orthogonalEdgeStyle;rounded=1;orthogonalLoop=1;jettySize=auto;html=1;strokeColor=#475569;strokeWidth=1.8;fontColor=#1E293B;fontSize=11;" target="P3_READ_SOIL_ADC" value="">
+          <mxGeometry relative="1" as="geometry" />
+        </mxCell>
+        <mxCell id="edge_28" edge="1" parent="1" source="P3_READ_SOIL_ADC" style="edgeStyle=orthogonalEdgeStyle;rounded=1;orthogonalLoop=1;jettySize=auto;html=1;strokeColor=#475569;strokeWidth=1.8;fontColor=#1E293B;fontSize=11;" target="P3_DEC_1100" value="">
+          <mxGeometry relative="1" as="geometry" />
+        </mxCell>
+        <mxCell id="edge_29" edge="1" parent="1" source="P3_DEC_1100" style="edgeStyle=orthogonalEdgeStyle;rounded=1;orthogonalLoop=1;jettySize=auto;html=1;strokeColor=#16A34A;strokeWidth=2;fontColor=#15803D;fontStyle=1;fontSize=11;exitX=1;exitDx=0;exitDy=0;exitY=0.5;exitDx=0;exitDy=0;entryX=0.5;entryDx=0;entryDy=0;entryY=0;entryDx=0;entryDy=0;" target="P3_YES_STOP_PUMP" value="YES (ADC &gt; 1100: Đủ nước)">
+          <mxGeometry relative="1" as="geometry" />
+        </mxCell>
+        <mxCell id="edge_30" edge="1" parent="1" source="P3_YES_STOP_PUMP" style="edgeStyle=orthogonalEdgeStyle;rounded=1;orthogonalLoop=1;jettySize=auto;html=1;strokeColor=#475569;strokeWidth=1.8;fontColor=#1E293B;fontSize=11;" target="P3_YES_UPDATE_STATE" value="">
+          <mxGeometry relative="1" as="geometry" />
+        </mxCell>
+        <mxCell id="edge_31" edge="1" parent="1" source="P3_YES_UPDATE_STATE" style="edgeStyle=orthogonalEdgeStyle;rounded=1;orthogonalLoop=1;jettySize=auto;html=1;strokeColor=#475569;strokeWidth=1.8;fontColor=#1E293B;fontSize=11;" target="P3_YES_WAIT_CYCLE" value="">
+          <mxGeometry relative="1" as="geometry" />
+        </mxCell>
+        <mxCell id="edge_32" edge="1" parent="1" source="P3_DEC_1100" style="edgeStyle=orthogonalEdgeStyle;rounded=1;orthogonalLoop=1;jettySize=auto;html=1;strokeColor=#DC2626;strokeWidth=2;fontColor=#B91C1C;fontStyle=1;fontSize=11;exitX=0.5;exitDx=0;exitDy=0;exitY=1;exitDx=0;exitDy=0;entryX=0.5;entryDx=0;entryDy=0;entryY=0;entryDx=0;entryDy=0;" target="P3_DEC_MAX_CYCLES" value="NO (ADC ≤ 1100: Thiếu ẩm)">
+          <mxGeometry relative="1" as="geometry" />
+        </mxCell>
+        <mxCell id="edge_33" edge="1" parent="1" source="P3_DEC_MAX_CYCLES" style="edgeStyle=orthogonalEdgeStyle;rounded=1;orthogonalLoop=1;jettySize=auto;html=1;strokeColor=#DC2626;strokeWidth=2;fontColor=#B91C1C;fontStyle=1;fontSize=11;exitX=0;exitDx=0;exitDy=0;exitY=0.5;exitDx=0;exitDy=0;entryX=0.5;entryDx=0;entryDy=0;entryY=0;entryDx=0;entryDy=0;" target="P3_FAILSAFE_ALERT" value="YES (≥ 5 lần: Lỗi!)">
+          <mxGeometry relative="1" as="geometry" />
+        </mxCell>
+        <mxCell id="edge_34" edge="1" parent="1" source="P3_DEC_MAX_CYCLES" style="edgeStyle=orthogonalEdgeStyle;rounded=1;orthogonalLoop=1;jettySize=auto;html=1;strokeColor=#16A34A;strokeWidth=2;fontColor=#15803D;fontStyle=1;fontSize=11;exitX=0.5;exitDx=0;exitDy=0;exitY=1;exitDx=0;exitDy=0;entryX=0.5;entryDx=0;entryDy=0;entryY=0;entryDx=0;entryDy=0;" target="P3_DEC_WATER_LEVEL" value="NO (&lt; 5 lần: An toàn)">
+          <mxGeometry relative="1" as="geometry" />
+        </mxCell>
+        <mxCell id="edge_35" edge="1" parent="1" source="P3_DEC_WATER_LEVEL" style="edgeStyle=orthogonalEdgeStyle;rounded=1;orthogonalLoop=1;jettySize=auto;html=1;strokeColor=#DC2626;strokeWidth=2;fontColor=#B91C1C;fontStyle=1;fontSize=11;exitX=0;exitDx=0;exitDy=0;exitY=0.5;exitDx=0;exitDy=0;entryX=0.5;entryDx=0;entryDy=0;entryY=0;entryDx=0;entryDy=0;" target="P3_NO_WATER_ALERT" value="NO (Hết nước bình)">
+          <mxGeometry relative="1" as="geometry" />
+        </mxCell>
+        <mxCell id="edge_36" edge="1" parent="1" source="P3_DEC_WATER_LEVEL" style="edgeStyle=orthogonalEdgeStyle;rounded=1;orthogonalLoop=1;jettySize=auto;html=1;strokeColor=#16A34A;strokeWidth=2;fontColor=#15803D;fontStyle=1;fontSize=11;exitX=0.5;exitDx=0;exitDy=0;exitY=1;exitDx=0;exitDy=0;entryX=0.5;entryDx=0;entryDy=0;entryY=0;entryDx=0;entryDy=0;" target="P3_INC_CYCLE" value="YES (Đủ nước tưới)">
+          <mxGeometry relative="1" as="geometry" />
+        </mxCell>
+        <mxCell id="edge_37" edge="1" parent="1" source="P3_INC_CYCLE" style="edgeStyle=orthogonalEdgeStyle;rounded=1;orthogonalLoop=1;jettySize=auto;html=1;strokeColor=#475569;strokeWidth=1.8;fontColor=#1E293B;fontSize=11;" target="P3_PUMP_ON" value="">
+          <mxGeometry relative="1" as="geometry" />
+        </mxCell>
+        <mxCell id="edge_38" edge="1" parent="1" source="P3_PUMP_ON" style="edgeStyle=orthogonalEdgeStyle;rounded=1;orthogonalLoop=1;jettySize=auto;html=1;strokeColor=#475569;strokeWidth=1.8;fontColor=#1E293B;fontSize=11;" target="P3_PUMP_RUN_3S" value="">
+          <mxGeometry relative="1" as="geometry" />
+        </mxCell>
+        <mxCell id="edge_39" edge="1" parent="1" source="P3_PUMP_RUN_3S" style="edgeStyle=orthogonalEdgeStyle;rounded=1;orthogonalLoop=1;jettySize=auto;html=1;strokeColor=#475569;strokeWidth=1.8;fontColor=#1E293B;fontSize=11;" target="P3_PUMP_OFF" value="">
+          <mxGeometry relative="1" as="geometry" />
+        </mxCell>
+        <mxCell id="edge_40" edge="1" parent="1" source="P3_PUMP_OFF" style="edgeStyle=orthogonalEdgeStyle;rounded=1;orthogonalLoop=1;jettySize=auto;html=1;strokeColor=#475569;strokeWidth=1.8;fontColor=#1E293B;fontSize=11;" target="P3_WAIT_SOAK" value="">
+          <mxGeometry relative="1" as="geometry" />
+        </mxCell>
+        <mxCell id="edge_41" edge="1" parent="1" source="P3_WAIT_SOAK" style="edgeStyle=orthogonalEdgeStyle;rounded=1;orthogonalLoop=1;jettySize=auto;html=1;strokeColor=#475569;strokeWidth=1.8;fontColor=#1E293B;fontSize=11;" target="P3_REREAD_ADC" value="">
+          <mxGeometry relative="1" as="geometry" />
+        </mxCell>
+        <mxCell id="edge_42" edge="1" parent="1" source="P3_REREAD_ADC" style="edgeStyle=orthogonalEdgeStyle;rounded=1;orthogonalLoop=1;jettySize=auto;html=1;strokeColor=#475569;strokeWidth=1.8;fontColor=#1E293B;fontSize=11;" target="P3_DEC_RECHECK_1100" value="">
+          <mxGeometry relative="1" as="geometry" />
+        </mxCell>
+        <mxCell id="edge_43" edge="1" parent="1" source="P3_DEC_RECHECK_1100" style="edgeStyle=orthogonalEdgeStyle;rounded=1;orthogonalLoop=1;jettySize=auto;html=1;strokeColor=#16A34A;strokeWidth=2;fontColor=#15803D;fontStyle=1;fontSize=11;exitX=1;exitDx=0;exitDy=0;exitY=0.5;exitDx=0;exitDy=0;entryX=0.5;entryDx=0;entryDy=0;entryY=1;entryDx=0;entryDy=0;" target="P3_YES_UPDATE_STATE" value="YES (Đạt &gt; 1100: Đã đủ nước)">
+          <mxGeometry relative="1" as="geometry">
+            <Array as="points">
+              <mxPoint x="2610" y="1292" />
+            </Array>
+          </mxGeometry>
+        </mxCell>
+        <mxCell id="edge_44" edge="1" parent="1" source="P3_DEC_RECHECK_1100" style="edgeStyle=orthogonalEdgeStyle;rounded=1;orthogonalLoop=1;jettySize=auto;html=1;strokeColor=#6366F1;strokeWidth=1.8;dashed=1;fontColor=#4338CA;fontSize=10.5;exitX=0;exitDx=0;exitDy=0;exitY=0.5;exitDx=0;exitDy=0;entryX=0;entryDx=0;entryDy=0;entryY=0.8;entryDx=0;entryDy=0;" target="P3_DEC_MAX_CYCLES" value="NO (Vẫn ≤ 1100: Cần thêm nước)">
+          <mxGeometry relative="1" as="geometry">
+            <Array as="points">
+              <mxPoint x="1895" y="1292" />
+              <mxPoint x="1895" y="573" />
+            </Array>
+          </mxGeometry>
+        </mxCell>
+        <mxCell id="P4_CONTAINER" parent="1" style="rounded=1;arcSize=4;fillColor=#FAF5FF;strokeColor=#9333EA;strokeWidth=2;dashed=0;html=1;shadow=0;" value="" vertex="1">
+          <mxGeometry height="1260" width="840" x="30" y="1780" as="geometry" />
+        </mxCell>
+        <mxCell id="P4_HEADER" parent="1" style="rounded=1;arcSize=4;fillColor=#6B21A8;strokeColor=#581C87;fontColor=#FFFFFF;fontStyle=1;fontSize=13;align=center;verticalAlign=middle;html=1;" value="PHÂN HỆ 4: ĐIỀU KHIỂN BIỂU CẢM HAI MẮT OLED (DUAL OLED EYE EMOTION ENGINE)" vertex="1">
+          <mxGeometry height="45" width="830" x="50" y="1770" as="geometry" />
+        </mxCell>
+        <mxCell id="P4_START" parent="1" style="rounded=1;arcSize=50;fillColor=#10B981;strokeColor=#059669;fontColor=#FFFFFF;fontStyle=1;align=center;verticalAlign=middle;html=1;fontSize=12;shadow=1;" value="&lt;b&gt;Khởi động Engine Biểu Cảm Hai Mắt OLED&lt;/b&gt;&lt;br/&gt;Hai màn hình OLED 0.96&amp;quot; độc lập đóng vai trò hai mắt thú cưng ảo" vertex="1">
+          <mxGeometry height="55" width="500" x="215" y="1835" as="geometry" />
+        </mxCell>
+        <mxCell id="P4_GET_INPUTS" parent="1" style="rounded=1;arcSize=8;fillColor=#FFFFFF;strokeColor=#D8B4FE;strokeWidth=1.5;fontColor=#0F172A;align=center;verticalAlign=middle;html=1;fontSize=11.5;" value="&lt;b&gt;ESP32 Tiếp nhận dữ liệu cảm biến &amp;amp; trạng thái hệ thống:&lt;/b&gt;&lt;br/&gt; • Trạng thái tương tác giọng nói &amp;amp; AI Chatbot (Phân hệ 5)&lt;br/&gt; • Cảm biến gia tốc rung lắc / góc nghiêng chậu cây MPU6050 (Phân hệ 2)&lt;br/&gt; • Độ ẩm đất (Soil ADC) &amp;amp; Mực nước bình chứa (Phân hệ 2 &amp;amp; 3)&lt;br/&gt; • Cường độ ánh sáng (Lux) &amp;amp; Nhiệt độ môi trường (Phân hệ 2)" vertex="1">
+          <mxGeometry height="90" width="560" x="185" y="1910" as="geometry" />
+        </mxCell>
+        <mxCell id="P4_DEC_VOICE" parent="1" style="rhombus;whiteSpace=wrap;html=1;fillColor=#FEF08A;strokeColor=#CA8A04;strokeWidth=2;fontColor=#854D0E;fontStyle=1;align=center;verticalAlign=middle;fontSize=11;" value="&lt;b&gt;Ưu tiên 1: Có sự kiện tương tác&lt;br/&gt;giọng nói / AI Chatbot không?&lt;/b&gt;" vertex="1">
+          <mxGeometry height="80" width="360" x="285" y="2023" as="geometry" />
+        </mxCell>
+        <mxCell id="P4_VOICE_EMO" parent="1" style="rounded=1;arcSize=8;fillColor=#F3E8FF;strokeColor=#A855F7;strokeWidth=2;fontColor=#581C87;align=center;verticalAlign=middle;html=1;fontSize=11;fontStyle=1;" value="&lt;b&gt;BIỂU CẢM TƯƠNG TÁC GIỌNG NÓI &amp;amp; AI:&lt;/b&gt;&lt;br/&gt; • Khi Mic thu âm: Biểu cảm &lt;b&gt;Đang lắng nghe (o_o)&lt;/b&gt;&lt;br/&gt; • Khi AI Cloud xử lý: Biểu cảm &lt;b&gt;Đang suy nghĩ (-_-)&lt;/b&gt;&lt;br/&gt; • Khi Loa phát trả lời: Biểu cảm &lt;b&gt;Đang nói chuyện (^o^)&lt;/b&gt;&lt;br/&gt; • Khi hoàn thành: Tự động trở về biểu cảm theo cây" vertex="1">
+          <mxGeometry height="105" width="305" x="555" y="2105" as="geometry" />
+        </mxCell>
+        <mxCell id="P4_DEC_TILT" parent="1" style="rhombus;whiteSpace=wrap;html=1;fillColor=#FEF08A;strokeColor=#CA8A04;strokeWidth=2;fontColor=#854D0E;fontStyle=1;align=center;verticalAlign=middle;fontSize=11;" value="&lt;b&gt;Ưu tiên 2: Phát hiện chậu cây&lt;br/&gt;nghiêng / rung lắc bất thường?&lt;br/&gt;(MPU6050: a &amp;gt; 1.5g / tilt &amp;gt; 30°)&lt;/b&gt;" vertex="1">
+          <mxGeometry height="85" width="380" x="175" y="2115" as="geometry" />
+        </mxCell>
+        <mxCell id="P4_TILT_EMO" parent="1" style="rounded=1;arcSize=8;fillColor=#FEE2E2;strokeColor=#DC2626;strokeWidth=2;fontColor=#991B1B;align=center;verticalAlign=middle;html=1;fontSize=11;fontStyle=1;" value="&lt;b&gt;Biểu cảm NGẠC NHIÊN / BÁO ĐỘNG (O_O)&lt;/b&gt;&lt;br/&gt; Phản hồi tức thì khi chậu cây bị tác động lực, va chạm hoặc di chuyển" vertex="1">
+          <mxGeometry height="65" width="320" x="30" y="2200" as="geometry" />
+        </mxCell>
+        <mxCell id="P4_DEC_SOIL" parent="1" style="rhombus;whiteSpace=wrap;html=1;fillColor=#FEF08A;strokeColor=#CA8A04;strokeWidth=2;fontColor=#854D0E;fontStyle=1;align=center;verticalAlign=middle;fontSize=11;" value="&lt;b&gt;Ưu tiên 3: Đất có đủ độ ẩm không?&lt;br/&gt;(ADC &amp;gt; 1100 &amp;amp; Bình còn nước?)&lt;/b&gt;" vertex="1">
+          <mxGeometry height="85" width="380" x="365" y="2240" as="geometry" />
+        </mxCell>
+        <mxCell id="P4_DEC_ENV" parent="1" style="rhombus;whiteSpace=wrap;html=1;fillColor=#FEF08A;strokeColor=#CA8A04;strokeWidth=2;fontColor=#854D0E;fontStyle=1;align=center;verticalAlign=middle;fontSize=11;" value="&lt;b&gt;Ưu tiên 4: Nhiệt độ &amp;amp; Ánh sáng&lt;br/&gt;có phù hợp cho sinh trưởng?&lt;br/&gt;(18°C ≤ T ≤ 32°C &amp;amp; Đủ sáng?)&lt;/b&gt;" vertex="1">
+          <mxGeometry height="85" width="380" x="250" y="2367.5" as="geometry" />
+        </mxCell>
+        <mxCell id="P4_ENV_BAD" parent="1" style="rounded=1;arcSize=8;fillColor=#FEF3C7;strokeColor=#D97706;strokeWidth=2;fontColor=#92400E;align=center;verticalAlign=middle;html=1;fontSize=11;" value="&lt;b&gt;Biểu cảm KHÓ CHỊU / MỆT MỎI (-.- hoặc ~_~)&lt;/b&gt;&lt;br/&gt; Mắt ngái ngủ, ủ rũ do thời tiết quá nóng/lạnh hoặc thiếu ánh sáng" vertex="1">
+          <mxGeometry height="70" width="330" x="70" y="2450" as="geometry" />
+        </mxCell>
+        <mxCell id="P4_ENV_GOOD" parent="1" style="rounded=1;arcSize=8;fillColor=#DCFCE7;strokeColor=#16A34A;strokeWidth=2;fontColor=#166534;align=center;verticalAlign=middle;html=1;fontSize=11;fontStyle=1;" value="&lt;b&gt;Biểu cảm VUI VẺ / HẠNH PHÚC (^ ^ hoặc (^_^)/)&lt;/b&gt;&lt;br/&gt; Hai mắt cong tròn tươi vui, cây phát triển trong môi trường tối ưu" vertex="1">
+          <mxGeometry height="70" width="315" x="545" y="2450" as="geometry" />
+        </mxCell>
+        <mxCell id="P4_DUAL_RENDER" parent="1" style="rounded=1;arcSize=6;fillColor=#6B21A8;strokeColor=#581C87;fontColor=#FFFFFF;fontStyle=1;align=center;verticalAlign=middle;html=1;fontSize=11.5;shadow=1;" value="&lt;b&gt;THUẬT TOÁN ĐỒNG BỘ HAI MÀN HÌNH OLED 0.96&amp;quot;:&lt;/b&gt;&lt;br/&gt; • &lt;b&gt;OLED 1 (I2C 0x3C):&lt;/b&gt; Render Frame đồ họa chuyên biệt cho &lt;b&gt;MẮT TRÁI&lt;/b&gt;&lt;br/&gt; • &lt;b&gt;OLED 2 (I2C 0x3D):&lt;/b&gt; Render Frame đồ họa chuyên biệt cho &lt;b&gt;MẮT PHẢI&lt;/b&gt;&lt;br/&gt; • &lt;i&gt;Nguyên tắc thiết kế:&lt;/i&gt; Hai mắt đồng bộ biểu cảm, mỗi màn hình chỉ đảm nhiệm một mắt riêng biệt (Tuyệt đối không hiển thị nguyên khuôn mặt trên từng màn hình)&lt;br/&gt; • Kèm thuật toán tự động chớp mắt tự nhiên (Blink Animation chu kỳ 3 - 5 giây ngẫu nhiên)" vertex="1">
+          <mxGeometry height="125" width="700" x="115" y="2545" as="geometry" />
+        </mxCell>
+        <mxCell id="P4_UPDATE_DISP" parent="1" style="rounded=1;arcSize=8;fillColor=#FFFFFF;strokeColor=#D8B4FE;strokeWidth=1.5;fontColor=#0F172A;align=center;verticalAlign=middle;html=1;fontSize=11.5;" value="&lt;b&gt;Gửi lệnh I2C display() cập nhật đồng thời cả hai màn hình OLED&lt;/b&gt;&lt;br/&gt;Duy trì biểu cảm hiển thị và liên tục cập nhật theo trạng thái mới nhất" vertex="1">
+          <mxGeometry height="55" width="540" x="195" y="2690" as="geometry" />
+        </mxCell>
+        <mxCell id="P4_EMO_TABLE" parent="1" style="shape=note;whiteSpace=wrap;html=1;size=14;verticalAlign=top;align=left;spacingLeft=8;spacingTop=6;fillColor=#FFFBEB;strokeColor=#F59E0B;strokeWidth=1.5;fontColor=#78350F;fontSize=11;" value="&lt;b&gt;BẢNG DANH MỤC BIỂU CẢM HAI MẮT OLED THỰC TẾ:&lt;/b&gt;&lt;br/&gt; • &lt;b&gt;Vui vẻ, tươi tốt:&lt;/b&gt; ^ ^  hoặc  (^_^)/   |   • &lt;b&gt;Buồn bã, thiếu nước:&lt;/b&gt; T_T&lt;br/&gt; • &lt;b&gt;Khát nước trầm trọng:&lt;/b&gt; &amp;gt;&amp;lt;            |   • &lt;b&gt;Ngạc nhiên, bị rung lắc chậu:&lt;/b&gt; O_O&lt;br/&gt; • &lt;b&gt;Đang lắng nghe:&lt;/b&gt; o_o                  |   • &lt;b&gt;Đang suy nghĩ (AI xử lý):&lt;/b&gt; -_-&lt;br/&gt; • &lt;b&gt;Đang nói chuyện (Loa phát):&lt;/b&gt; ^o^      |   • &lt;b&gt;Ngái ngủ, mệt mỏi:&lt;/b&gt; -.-  hoặc  ~_~" vertex="1">
+          <mxGeometry height="130" width="640" x="145" y="2765" as="geometry" />
+        </mxCell>
+        <mxCell id="edge_45" edge="1" parent="1" source="P4_START" style="edgeStyle=orthogonalEdgeStyle;rounded=1;orthogonalLoop=1;jettySize=auto;html=1;strokeColor=#475569;strokeWidth=1.8;fontColor=#1E293B;fontSize=11;" target="P4_GET_INPUTS" value="">
+          <mxGeometry relative="1" as="geometry" />
+        </mxCell>
+        <mxCell id="edge_46" edge="1" parent="1" source="P4_GET_INPUTS" style="edgeStyle=orthogonalEdgeStyle;rounded=1;orthogonalLoop=1;jettySize=auto;html=1;strokeColor=#475569;strokeWidth=1.8;fontColor=#1E293B;fontSize=11;" target="P4_DEC_VOICE" value="">
+          <mxGeometry relative="1" as="geometry" />
+        </mxCell>
+        <mxCell id="edge_47" edge="1" parent="1" source="P4_DEC_VOICE" style="edgeStyle=orthogonalEdgeStyle;rounded=1;orthogonalLoop=1;jettySize=auto;html=1;strokeColor=#16A34A;strokeWidth=2;fontColor=#15803D;fontStyle=1;fontSize=11;exitX=1;exitDx=0;exitDy=0;exitY=0.5;exitDx=0;exitDy=0;entryX=0.5;entryDx=0;entryDy=0;entryY=0;entryDx=0;entryDy=0;" target="P4_VOICE_EMO" value="YES (Đang tương tác)">
+          <mxGeometry relative="1" as="geometry" />
+        </mxCell>
+        <mxCell id="edge_48" edge="1" parent="1" source="P4_DEC_VOICE" style="edgeStyle=orthogonalEdgeStyle;rounded=1;orthogonalLoop=1;jettySize=auto;html=1;strokeColor=#475569;strokeWidth=1.8;fontColor=#1E293B;fontSize=11;exitX=0.5;exitDx=0;exitDy=0;exitY=1;exitDx=0;exitDy=0;entryX=0.5;entryDx=0;entryDy=0;entryY=0;entryDx=0;entryDy=0;" target="P4_DEC_TILT" value="NO (Không có Voice)">
+          <mxGeometry relative="1" as="geometry" />
+        </mxCell>
+        <mxCell id="edge_49" edge="1" parent="1" source="P4_DEC_TILT" style="edgeStyle=orthogonalEdgeStyle;rounded=1;orthogonalLoop=1;jettySize=auto;html=1;strokeColor=#DC2626;strokeWidth=2;fontColor=#B91C1C;fontStyle=1;fontSize=11;exitX=0;exitDx=0;exitDy=0;exitY=0.5;exitDx=0;exitDy=0;entryX=0.5;entryDx=0;entryDy=0;entryY=0;entryDx=0;entryDy=0;" target="P4_TILT_EMO" value="YES (Rung lắc / Nghiêng)">
+          <mxGeometry relative="1" as="geometry" />
+        </mxCell>
+        <mxCell id="edge_50" edge="1" parent="1" source="P4_DEC_TILT" style="edgeStyle=orthogonalEdgeStyle;rounded=1;orthogonalLoop=1;jettySize=auto;html=1;strokeColor=#475569;strokeWidth=1.8;fontColor=#1E293B;fontSize=11;exitX=0.5;exitDx=0;exitDy=0;exitY=1;exitDx=0;exitDy=0;entryX=0.5;entryDx=0;entryDy=0;entryY=0;entryDx=0;entryDy=0;" target="P4_DEC_SOIL" value="NO (Đứng yên bình thường)">
+          <mxGeometry relative="1" as="geometry" />
+        </mxCell>
+        <mxCell id="edge_51" edge="1" parent="1" source="P4_DEC_SOIL" style="edgeStyle=orthogonalEdgeStyle;rounded=1;orthogonalLoop=1;jettySize=auto;html=1;strokeColor=#DC2626;strokeWidth=2;fontColor=#B91C1C;fontStyle=1;fontSize=11;exitX=1;exitDx=0;exitDy=0;exitY=0.5;exitDx=0;exitDy=0;entryX=0.5;entryDx=0;entryDy=0;entryY=0;entryDx=0;entryDy=0;" target="P4_SOIL_EMO" value="NO (Đất khô / Cạn nước)">
+          <mxGeometry relative="1" as="geometry" />
+        </mxCell>
+        <mxCell id="edge_52" edge="1" parent="1" source="P4_DEC_SOIL" style="edgeStyle=orthogonalEdgeStyle;rounded=1;orthogonalLoop=1;jettySize=auto;html=1;strokeColor=#16A34A;strokeWidth=2;fontColor=#15803D;fontStyle=1;fontSize=11;exitX=0.5;exitDx=0;exitDy=0;exitY=1;exitDx=0;exitDy=0;entryX=0.5;entryDx=0;entryDy=0;entryY=0;entryDx=0;entryDy=0;" target="P4_DEC_ENV" value="YES (Đất đủ độ ẩm)">
+          <mxGeometry relative="1" as="geometry" />
+        </mxCell>
+        <mxCell id="edge_53" edge="1" parent="1" source="P4_DEC_ENV" style="edgeStyle=orthogonalEdgeStyle;rounded=1;orthogonalLoop=1;jettySize=auto;html=1;strokeColor=#DC2626;strokeWidth=2;fontColor=#B91C1C;fontStyle=1;fontSize=11;exitX=0;exitDx=0;exitDy=0;exitY=0.5;exitDx=0;exitDy=0;entryX=0.5;entryDx=0;entryDy=0;entryY=0;entryDx=0;entryDy=0;" target="P4_ENV_BAD" value="NO (Nóng / Lạnh / Tối)">
+          <mxGeometry relative="1" as="geometry" />
+        </mxCell>
+        <mxCell id="edge_54" edge="1" parent="1" source="P4_DEC_ENV" style="edgeStyle=orthogonalEdgeStyle;rounded=1;orthogonalLoop=1;jettySize=auto;html=1;strokeColor=#16A34A;strokeWidth=2;fontColor=#15803D;fontStyle=1;fontSize=11;exitX=1;exitDx=0;exitDy=0;exitY=0.5;exitDx=0;exitDy=0;entryX=0.5;entryDx=0;entryDy=0;entryY=0;entryDx=0;entryDy=0;" target="P4_ENV_GOOD" value="YES (Môi trường lý tưởng)">
+          <mxGeometry relative="1" as="geometry" />
+        </mxCell>
+        <mxCell id="edge_55" edge="1" parent="1" source="P4_SOIL_EMO" style="edgeStyle=orthogonalEdgeStyle;rounded=1;orthogonalLoop=1;jettySize=auto;html=1;strokeColor=#475569;strokeWidth=1.8;fontColor=#1E293B;fontSize=11;exitDx=0;exitDy=0;entryX=0.85;entryDx=0;entryDy=0;entryY=0;entryDx=0;entryDy=0;" target="P4_DUAL_RENDER" value="">
+          <mxGeometry relative="1" as="geometry" />
+        </mxCell>
+        <mxCell id="edge_56" edge="1" parent="1" source="P4_TILT_EMO" style="edgeStyle=orthogonalEdgeStyle;rounded=1;orthogonalLoop=1;jettySize=auto;html=1;strokeColor=#475569;strokeWidth=1.8;fontColor=#1E293B;fontSize=11;exitX=0.5;exitDx=0;exitDy=0;exitY=1;exitDx=0;exitDy=0;entryX=0.15;entryDx=0;entryDy=0;entryY=0;entryDx=0;entryDy=0;" target="P4_DUAL_RENDER" value="">
+          <mxGeometry relative="1" as="geometry" />
+        </mxCell>
+        <mxCell id="edge_57" edge="1" parent="1" source="P4_SOIL_EMO" style="edgeStyle=orthogonalEdgeStyle;rounded=1;orthogonalLoop=1;jettySize=auto;html=1;strokeColor=#475569;strokeWidth=1.8;fontColor=#1E293B;fontSize=11;exitX=0.5;exitDx=0;exitDy=0;exitY=1;exitDx=0;exitDy=0;entryX=0.7;entryDx=0;entryDy=0;entryY=0;entryDx=0;entryDy=0;" target="P4_DUAL_RENDER" value="">
+          <mxGeometry relative="1" as="geometry" />
+        </mxCell>
+        <mxCell id="edge_58" edge="1" parent="1" source="P4_ENV_BAD" style="edgeStyle=orthogonalEdgeStyle;rounded=1;orthogonalLoop=1;jettySize=auto;html=1;strokeColor=#475569;strokeWidth=1.8;fontColor=#1E293B;fontSize=11;exitX=0.5;exitDx=0;exitDy=0;exitY=1;exitDx=0;exitDy=0;entryX=0.3;entryDx=0;entryDy=0;entryY=0;entryDx=0;entryDy=0;" target="P4_DUAL_RENDER" value="">
+          <mxGeometry relative="1" as="geometry" />
+        </mxCell>
+        <mxCell id="edge_59" edge="1" parent="1" source="P4_ENV_GOOD" style="edgeStyle=orthogonalEdgeStyle;rounded=1;orthogonalLoop=1;jettySize=auto;html=1;strokeColor=#475569;strokeWidth=1.8;fontColor=#1E293B;fontSize=11;exitX=0.5;exitDx=0;exitDy=0;exitY=1;exitDx=0;exitDy=0;entryX=0.5;entryDx=0;entryDy=0;entryY=0;entryDx=0;entryDy=0;" target="P4_DUAL_RENDER" value="">
+          <mxGeometry relative="1" as="geometry" />
+        </mxCell>
+        <mxCell id="edge_60" edge="1" parent="1" source="P4_DUAL_RENDER" style="edgeStyle=orthogonalEdgeStyle;rounded=1;orthogonalLoop=1;jettySize=auto;html=1;strokeColor=#475569;strokeWidth=1.8;fontColor=#1E293B;fontSize=11;" target="P4_UPDATE_DISP" value="">
+          <mxGeometry relative="1" as="geometry" />
+        </mxCell>
+        <mxCell id="P5_CONTAINER" parent="1" style="rounded=1;arcSize=4;fillColor=#EEF2FF;strokeColor=#4F46E5;strokeWidth=2;dashed=0;html=1;shadow=0;" value="" vertex="1">
+          <mxGeometry height="1260" width="920" x="920" y="1770" as="geometry" />
+        </mxCell>
+        <mxCell id="P5_HEADER" parent="1" style="rounded=1;arcSize=4;fillColor=#3730A3;strokeColor=#312E81;fontColor=#FFFFFF;fontStyle=1;fontSize=13;align=center;verticalAlign=middle;html=1;" value="PHÂN HỆ 5: TƯƠNG TÁC GIỌNG NÓI VÀ AI CHATBOT (VOICE &amp;amp; AI CHATBOT INTERACTION)" vertex="1">
+          <mxGeometry height="45" width="920" x="920" y="1770" as="geometry" />
+        </mxCell>
+        <mxCell id="P5_MIC_LISTEN" parent="1" style="rounded=1;arcSize=8;fillColor=#FFFFFF;strokeColor=#A5B4FC;strokeWidth=1.5;fontColor=#0F172A;align=center;verticalAlign=middle;html=1;fontSize=11.5;" value="&lt;b&gt;Microphone (INMP441 / Analog) thu nhận âm thanh liên tục&lt;/b&gt;&lt;br/&gt;Lấy mẫu tín hiệu âm thanh môi trường xung quanh cây trồng (Sampling 16kHz)" vertex="1">
+          <mxGeometry height="55" width="540" x="1110" y="1835" as="geometry" />
+        </mxCell>
+        <mxCell id="P5_DEC_VOICE" parent="1" style="rhombus;whiteSpace=wrap;html=1;fillColor=#FEF08A;strokeColor=#CA8A04;strokeWidth=2;fontColor=#854D0E;fontStyle=1;align=center;verticalAlign=middle;fontSize=11;" value="&lt;b&gt;ESP32 phát hiện&lt;br/&gt;có giọng nói không?&lt;br/&gt;(VAD / Energy Threshold)&lt;/b&gt;" vertex="1">
+          <mxGeometry height="80" width="360" x="1200" y="1915" as="geometry" />
+        </mxCell>
+        <mxCell id="P5_RECORD_BUFFER" parent="1" style="rounded=1;arcSize=8;fillColor=#E0E7FF;strokeColor=#4F46E5;strokeWidth=2;fontColor=#3730A3;align=center;verticalAlign=middle;html=1;fontSize=11.5;fontStyle=1;" value="&lt;b&gt;Thu âm và lưu đoạn âm thanh vào Audio Buffer trong RAM&lt;/b&gt;&lt;br/&gt;Đồng thời thông báo OLED 2 mắt chuyển sang biểu cảm &lt;b&gt;Đang lắng nghe (o_o)&lt;/b&gt;" vertex="1">
+          <mxGeometry height="60" width="560" x="1100" y="2020" as="geometry" />
+        </mxCell>
+        <mxCell id="P5_DEC_INTERNET" parent="1" style="rhombus;whiteSpace=wrap;html=1;fillColor=#FEF08A;strokeColor=#CA8A04;strokeWidth=2;fontColor=#854D0E;fontStyle=1;align=center;verticalAlign=middle;fontSize=11;" value="&lt;b&gt;Có kết nối Internet&lt;br/&gt;đến Cloud Server không?&lt;/b&gt;" vertex="1">
+          <mxGeometry height="80" width="360" x="1200" y="2105" as="geometry" />
+        </mxCell>
+        <mxCell id="P5_OFFLINE_VOICE" parent="1" style="rounded=1;arcSize=8;fillColor=#FEF3C7;strokeColor=#D97706;strokeWidth=2;fontColor=#92400E;align=center;verticalAlign=middle;html=1;fontSize=11;" value="&lt;b&gt;XỬ LÝ NGOẠI LỆ MẤT MẠNG (OFFLINE VOICE):&lt;/b&gt;&lt;br/&gt; • Tạm ngừng tính năng nhận dạng giọng nói AI trực tuyến&lt;br/&gt; • Loa phát âm thanh có sẵn: &lt;i&gt;&amp;quot;Mất mạng rồi, cây vẫn tự động tưới nước nhé!&amp;quot;&lt;/i&gt;&lt;br/&gt; • Đưa OLED trở lại biểu cảm cơ bản theo trạng thái cây" vertex="1">
+          <mxGeometry height="95" width="320" x="945" y="2205" as="geometry" />
+        </mxCell>
+        <mxCell id="P5_ONLINE_STT" parent="1" style="rounded=1;arcSize=8;fillColor=#FFFFFF;strokeColor=#A5B4FC;strokeWidth=1.5;fontColor=#0F172A;align=center;verticalAlign=middle;html=1;fontSize=11.5;" value="&lt;b&gt;Speech-to-Text (STT) qua Cloud API:&lt;/b&gt;&lt;br/&gt; Stream đoạn âm thanh lên Cloud ➔ Chuyển đổi giọng nói thành văn bản&lt;br/&gt; Đồng thời OLED 2 mắt chuyển sang biểu cảm &lt;b&gt;Đang suy nghĩ (-_-)&lt;/b&gt;" vertex="1">
+          <mxGeometry height="65" width="560" x="1270" y="2213" as="geometry" />
+        </mxCell>
+        <mxCell id="P5_INTENT_SPLIT" parent="1" style="rounded=1;arcSize=6;fillColor=#3730A3;strokeColor=#312E81;fontColor=#FFFFFF;fontStyle=1;align=center;verticalAlign=middle;html=1;fontSize=11.5;shadow=1;" value="&lt;b&gt;PHÂN TÍCH Ý ĐỊNH NGƯỜI DÙNG (INTENT RECOGNITION &amp;amp; NLP):&lt;/b&gt;&lt;br/&gt; Bộ phân tích ngôn ngữ tự nhiên phân loại câu nói vào 1 trong 3 nhóm chức năng:" vertex="1">
+          <mxGeometry height="60" width="680" x="1040" y="2305" as="geometry" />
+        </mxCell>
+        <mxCell id="P5_INTENT_1" parent="1" style="rounded=1;arcSize=8;fillColor=#FFFFFF;strokeColor=#A5B4FC;strokeWidth=1.5;fontColor=#0F172A;align=center;verticalAlign=middle;html=1;fontSize=11.5;" value="&lt;b&gt;NHÓM 1: HỎI THĂM TÌNH TRẠNG CÂY&lt;/b&gt;&lt;br/&gt; • Ví dụ câu hỏi:&lt;br/&gt;   &lt;i&gt;&amp;quot;Cây có khỏe không?&amp;quot;&lt;/i&gt;&lt;br/&gt;   &lt;i&gt;&amp;quot;Cây có cần tưới nước không?&amp;quot;&lt;/i&gt;&lt;br/&gt;   &lt;i&gt;&amp;quot;Nhiệt độ hiện tại thế nào?&amp;quot;&lt;/i&gt;&lt;br/&gt; • &lt;b&gt;Xử lý:&lt;/b&gt; ESP32 trích xuất dữ liệu cảm biến mới nhất (Đất, Nước, Nhiệt độ, Ánh sáng, AQI)&lt;br/&gt; • Gửi ngữ cảnh (Context) cho AI Chatbot" vertex="1">
+          <mxGeometry height="160" width="275" x="945" y="2390" as="geometry" />
+        </mxCell>
+        <mxCell id="P5_INTENT_2" parent="1" style="rounded=1;arcSize=8;fillColor=#E0E7FF;strokeColor=#4F46E5;strokeWidth=2;fontColor=#3730A3;align=center;verticalAlign=middle;html=1;fontSize=11.5;fontStyle=1;" value="&lt;b&gt;NHÓM 2: ĐIỀU KHIỂN THIẾT BỊ&lt;/b&gt;&lt;br/&gt; • Ví dụ khẩu lệnh:&lt;br/&gt;   &lt;i&gt;&amp;quot;Tưới nước cho cây.&amp;quot;&lt;/i&gt;&lt;br/&gt;   &lt;i&gt;&amp;quot;Ngừng tưới nước.&amp;quot;&lt;/i&gt;&lt;br/&gt;   &lt;i&gt;&amp;quot;Bật chế độ tự động.&amp;quot;&lt;/i&gt;&lt;br/&gt; • &lt;b&gt;Quy tắc an toàn:&lt;/b&gt;&lt;br/&gt;   - Lệnh ngừng tưới: &lt;b&gt;Ưu tiên ngắt bơm ngay!&lt;/b&gt;&lt;br/&gt;   - Lệnh tưới: Kiểm tra mực nước &amp;amp; an toàn trước khi kích hoạt xung 3s có giám sát.&lt;br/&gt; ➔ Gửi tín hiệu sang &lt;b&gt;PHÂN HỆ 3&lt;/b&gt;" vertex="1">
+          <mxGeometry height="160" width="285" x="1235" y="2390" as="geometry" />
+        </mxCell>
+        <mxCell id="P5_INTENT_3" parent="1" style="rounded=1;arcSize=8;fillColor=#FFFFFF;strokeColor=#A5B4FC;strokeWidth=1.5;fontColor=#0F172A;align=center;verticalAlign=middle;html=1;fontSize=11.5;" value="&lt;b&gt;NHÓM 3: TRÒ CHUYỆN VỚI CÂY&lt;/b&gt;&lt;br/&gt; • Ví dụ trò chuyện:&lt;br/&gt;   &lt;i&gt;&amp;quot;Bạn đang làm gì vậy?&amp;quot;&lt;/i&gt;&lt;br/&gt;   &lt;i&gt;&amp;quot;Bạn có vui không?&amp;quot;&lt;/i&gt;&lt;br/&gt;   &lt;i&gt;&amp;quot;Hôm nay bạn thế nào?&amp;quot;&lt;/i&gt;&lt;br/&gt; • &lt;b&gt;Xử lý:&lt;/b&gt; Gửi câu hỏi + Dữ liệu cảm biến thực tế của cây vào mô hình ngôn ngữ lớn (AI LLM)&lt;br/&gt; • AI tạo câu trả lời tự nhiên theo tính cách riêng" vertex="1">
+          <mxGeometry height="160" width="280" x="1535" y="2390" as="geometry" />
+        </mxCell>
+        <mxCell id="P5_AI_PERSONALITY" parent="1" style="rounded=1;arcSize=6;fillColor=#EEF2FF;strokeColor=#4F46E5;strokeWidth=2;fontColor=#1E1B4B;align=left;spacingLeft=15;verticalAlign=middle;html=1;fontSize=11.5;shadow=0;" value="&lt;b&gt;TẠO PHẢN HỒI AI CHATBOT VỚI TÍNH CÁCH ĐỘC ĐÁO CỦA CÂY:&lt;/b&gt;&lt;br/&gt; • &lt;b&gt;Khi được tưới nước:&lt;/b&gt; &lt;i&gt;&amp;quot;Aaaa, mát quá! Cảm ơn bạn nha!&amp;quot;&lt;/i&gt;&lt;br/&gt; • &lt;b&gt;Khi đất khô:&lt;/b&gt; &lt;i&gt;&amp;quot;Mình khát nước lắm rồi đó!&amp;quot;&lt;/i&gt;&lt;br/&gt; • &lt;b&gt;Khi thiếu ánh sáng:&lt;/b&gt; &lt;i&gt;&amp;quot;Hôm nay mình hơi thiếu nắng!&amp;quot;&lt;/i&gt;&lt;br/&gt; • &lt;b&gt;Khi trời quá nóng:&lt;/b&gt; &lt;i&gt;&amp;quot;Nóng quá, cho mình nghỉ ngơi chút đi!&amp;quot;&lt;/i&gt;&lt;br/&gt; • &lt;b&gt;Khi người dùng lắc chậu:&lt;/b&gt; &lt;i&gt;&amp;quot;Á! Bạn làm mình chóng mặt rồi!&amp;quot;&lt;/i&gt;&lt;br/&gt; • &lt;b&gt;Khi không có vấn đề:&lt;/b&gt; &lt;i&gt;&amp;quot;Hôm nay mình khỏe re luôn!&amp;quot;&lt;/i&gt;&lt;br/&gt; &lt;i&gt;(Nguyên tắc bắt buộc: AI trả lời dựa trên dữ liệu cảm biến thực tế, không tự bịa ra các chỉ số)&lt;/i&gt;" vertex="1">
+          <mxGeometry height="140" width="700" x="1030" y="2575" as="geometry" />
+        </mxCell>
+        <mxCell id="P5_TTS_ENGINE" parent="1" style="rounded=1;arcSize=8;fillColor=#FFFFFF;strokeColor=#A5B4FC;strokeWidth=1.5;fontColor=#0F172A;align=center;verticalAlign=middle;html=1;fontSize=11.5;" value="&lt;b&gt;Cloud Text-to-Speech (TTS Engine):&lt;/b&gt;&lt;br/&gt; Chuyển đổi văn bản câu trả lời của AI thành luồng dữ liệu âm thanh giọng nói (Audio Stream)" vertex="1">
+          <mxGeometry height="55" width="560" x="1100" y="2740" as="geometry" />
+        </mxCell>
+        <mxCell id="P5_SPEAKER_PLAY" parent="1" style="rounded=1;arcSize=8;fillColor=#E0E7FF;strokeColor=#4F46E5;strokeWidth=2;fontColor=#3730A3;align=center;verticalAlign=middle;html=1;fontSize=11.5;fontStyle=1;" value="&lt;b&gt;ESP32 Nhận Audio Stream &amp;amp; Phát qua Loa (Speaker):&lt;/b&gt;&lt;br/&gt; Đồng thời điều khiển OLED 2 mắt chuyển sang biểu cảm &lt;b&gt;Đang nói chuyện (^o^)&lt;/b&gt; linh động" vertex="1">
+          <mxGeometry height="60" width="600" x="1080" y="2820" as="geometry" />
+        </mxCell>
+        <mxCell id="P5_END_VOICE" parent="1" style="rounded=1;arcSize=50;fillColor=#10B981;strokeColor=#059669;fontColor=#FFFFFF;fontStyle=1;align=center;verticalAlign=middle;html=1;fontSize=12;shadow=1;" value="&lt;b&gt;Kết thúc tương tác giọng nói:&lt;/b&gt;&lt;br/&gt; OLED tự động hoàn trả quyền điều khiển về biểu cảm theo trạng thái thực tế của cây trồng" vertex="1">
+          <mxGeometry height="55" width="540" x="1110" y="2905" as="geometry" />
+        </mxCell>
+        <mxCell id="edge_61" edge="1" parent="1" source="P5_MIC_LISTEN" style="edgeStyle=orthogonalEdgeStyle;rounded=1;orthogonalLoop=1;jettySize=auto;html=1;strokeColor=#475569;strokeWidth=1.8;fontColor=#1E293B;fontSize=11;" target="P5_DEC_VOICE" value="">
+          <mxGeometry relative="1" as="geometry" />
+        </mxCell>
+        <mxCell id="edge_62" edge="1" parent="1" source="P5_DEC_VOICE" style="edgeStyle=orthogonalEdgeStyle;rounded=1;orthogonalLoop=1;jettySize=auto;html=1;strokeColor=#6366F1;strokeWidth=1.8;dashed=1;fontColor=#4338CA;fontSize=10.5;exitX=0;exitDx=0;exitDy=0;exitY=0.5;exitDx=0;exitDy=0;entryX=0;entryDx=0;entryDy=0;entryY=0.5;entryDx=0;entryDy=0;" target="P5_MIC_LISTEN" value="NO (Tiếp tục lắng nghe)">
+          <mxGeometry relative="1" as="geometry">
+            <Array as="points">
+              <mxPoint x="945" y="1955" />
+              <mxPoint x="945" y="1862" />
+            </Array>
+          </mxGeometry>
+        </mxCell>
+        <mxCell id="edge_63" edge="1" parent="1" source="P5_DEC_VOICE" style="edgeStyle=orthogonalEdgeStyle;rounded=1;orthogonalLoop=1;jettySize=auto;html=1;strokeColor=#16A34A;strokeWidth=2;fontColor=#15803D;fontStyle=1;fontSize=11;exitX=0.5;exitDx=0;exitDy=0;exitY=1;exitDx=0;exitDy=0;entryX=0.5;entryDx=0;entryDy=0;entryY=0;entryDx=0;entryDy=0;" target="P5_RECORD_BUFFER" value="YES (Phát hiện giọng nói)">
+          <mxGeometry relative="1" as="geometry" />
+        </mxCell>
+        <mxCell id="edge_64" edge="1" parent="1" source="P5_RECORD_BUFFER" style="edgeStyle=orthogonalEdgeStyle;rounded=1;orthogonalLoop=1;jettySize=auto;html=1;strokeColor=#475569;strokeWidth=1.8;fontColor=#1E293B;fontSize=11;" target="P5_DEC_INTERNET" value="">
+          <mxGeometry relative="1" as="geometry" />
+        </mxCell>
+        <mxCell id="edge_65" edge="1" parent="1" source="P5_DEC_INTERNET" style="edgeStyle=orthogonalEdgeStyle;rounded=1;orthogonalLoop=1;jettySize=auto;html=1;strokeColor=#DC2626;strokeWidth=2;fontColor=#B91C1C;fontStyle=1;fontSize=11;exitX=0;exitDx=0;exitDy=0;exitY=0.5;exitDx=0;exitDy=0;entryX=0.5;entryDx=0;entryDy=0;entryY=0;entryDx=0;entryDy=0;" target="P5_OFFLINE_VOICE" value="NO (Mất mạng)">
+          <mxGeometry relative="1" as="geometry" />
+        </mxCell>
+        <mxCell id="edge_66" edge="1" parent="1" source="P5_DEC_INTERNET" style="edgeStyle=orthogonalEdgeStyle;rounded=1;orthogonalLoop=1;jettySize=auto;html=1;strokeColor=#16A34A;strokeWidth=2;fontColor=#15803D;fontStyle=1;fontSize=11;exitX=0.5;exitDx=0;exitDy=0;exitY=1;exitDx=0;exitDy=0;entryX=0.5;entryDx=0;entryDy=0;entryY=0;entryDx=0;entryDy=0;" target="P5_ONLINE_STT" value="YES (Có kết nối Cloud)">
+          <mxGeometry relative="1" as="geometry" />
+        </mxCell>
+        <mxCell id="edge_67" edge="1" parent="1" source="P5_ONLINE_STT" style="edgeStyle=orthogonalEdgeStyle;rounded=1;orthogonalLoop=1;jettySize=auto;html=1;strokeColor=#475569;strokeWidth=1.8;fontColor=#1E293B;fontSize=11;" target="P5_INTENT_SPLIT" value="">
+          <mxGeometry relative="1" as="geometry" />
+        </mxCell>
+        <mxCell id="edge_68" edge="1" parent="1" source="P5_INTENT_SPLIT" style="edgeStyle=orthogonalEdgeStyle;rounded=1;orthogonalLoop=1;jettySize=auto;html=1;strokeColor=#475569;strokeWidth=1.8;fontColor=#1E293B;fontSize=11;exitX=0.15;exitDx=0;exitDy=0;exitY=1;exitDx=0;exitDy=0;entryX=0.5;entryDx=0;entryDy=0;entryY=0;entryDx=0;entryDy=0;" target="P5_INTENT_1" value="Nhóm 1">
+          <mxGeometry relative="1" as="geometry" />
+        </mxCell>
+        <mxCell id="edge_69" edge="1" parent="1" source="P5_INTENT_SPLIT" style="edgeStyle=orthogonalEdgeStyle;rounded=1;orthogonalLoop=1;jettySize=auto;html=1;strokeColor=#475569;strokeWidth=1.8;fontColor=#1E293B;fontSize=11;exitX=0.5;exitDx=0;exitDy=0;exitY=1;exitDx=0;exitDy=0;entryX=0.5;entryDx=0;entryDy=0;entryY=0;entryDx=0;entryDy=0;" target="P5_INTENT_2" value="Nhóm 2">
+          <mxGeometry relative="1" as="geometry" />
+        </mxCell>
+        <mxCell id="edge_70" edge="1" parent="1" source="P5_INTENT_SPLIT" style="edgeStyle=orthogonalEdgeStyle;rounded=1;orthogonalLoop=1;jettySize=auto;html=1;strokeColor=#475569;strokeWidth=1.8;fontColor=#1E293B;fontSize=11;exitX=0.85;exitDx=0;exitDy=0;exitY=1;exitDx=0;exitDy=0;entryX=0.5;entryDx=0;entryDy=0;entryY=0;entryDx=0;entryDy=0;" target="P5_INTENT_3" value="Nhóm 3">
+          <mxGeometry relative="1" as="geometry" />
+        </mxCell>
+        <mxCell id="edge_71" edge="1" parent="1" source="P5_INTENT_1" style="edgeStyle=orthogonalEdgeStyle;rounded=1;orthogonalLoop=1;jettySize=auto;html=1;strokeColor=#475569;strokeWidth=1.8;fontColor=#1E293B;fontSize=11;exitX=0.5;exitDx=0;exitDy=0;exitY=1;exitDx=0;exitDy=0;entryX=0.2;entryDx=0;entryDy=0;entryY=0;entryDx=0;entryDy=0;" target="P5_AI_PERSONALITY" value="">
+          <mxGeometry relative="1" as="geometry" />
+        </mxCell>
+        <mxCell id="edge_72" edge="1" parent="1" source="P5_INTENT_3" style="edgeStyle=orthogonalEdgeStyle;rounded=1;orthogonalLoop=1;jettySize=auto;html=1;strokeColor=#475569;strokeWidth=1.8;fontColor=#1E293B;fontSize=11;exitX=0.5;exitDx=0;exitDy=0;exitY=1;exitDx=0;exitDy=0;entryX=0.8;entryDx=0;entryDy=0;entryY=0;entryDx=0;entryDy=0;" target="P5_AI_PERSONALITY" value="">
+          <mxGeometry relative="1" as="geometry" />
+        </mxCell>
+        <mxCell id="edge_73" edge="1" parent="1" source="P5_AI_PERSONALITY" style="edgeStyle=orthogonalEdgeStyle;rounded=1;orthogonalLoop=1;jettySize=auto;html=1;strokeColor=#475569;strokeWidth=1.8;fontColor=#1E293B;fontSize=11;" target="P5_TTS_ENGINE" value="">
+          <mxGeometry relative="1" as="geometry" />
+        </mxCell>
+        <mxCell id="edge_74" edge="1" parent="1" source="P5_TTS_ENGINE" style="edgeStyle=orthogonalEdgeStyle;rounded=1;orthogonalLoop=1;jettySize=auto;html=1;strokeColor=#475569;strokeWidth=1.8;fontColor=#1E293B;fontSize=11;" target="P5_SPEAKER_PLAY" value="">
+          <mxGeometry relative="1" as="geometry" />
+        </mxCell>
+        <mxCell id="edge_75" edge="1" parent="1" source="P5_SPEAKER_PLAY" style="edgeStyle=orthogonalEdgeStyle;rounded=1;orthogonalLoop=1;jettySize=auto;html=1;strokeColor=#475569;strokeWidth=1.8;fontColor=#1E293B;fontSize=11;" target="P5_END_VOICE" value="">
+          <mxGeometry relative="1" as="geometry" />
+        </mxCell>
+        <mxCell id="P6_CONTAINER" parent="1" style="rounded=1;arcSize=4;fillColor=#F0F9FF;strokeColor=#0284C7;strokeWidth=2;dashed=0;html=1;shadow=0;" value="" vertex="1">
+          <mxGeometry height="1260" width="920" x="1990" y="1580" as="geometry" />
+        </mxCell>
+        <mxCell id="P6_HEADER" parent="1" style="rounded=1;arcSize=4;fillColor=#0369A1;strokeColor=#075985;fontColor=#FFFFFF;fontStyle=1;fontSize=13;align=center;verticalAlign=middle;html=1;" value="PHÂN HỆ 6: KẾT NỐI CLOUD VÀ MOBILE APP (IOT CLOUD &amp;amp; MOBILE APP INTEGRATION)" vertex="1">
+          <mxGeometry height="45" width="920" x="1880" y="1770" as="geometry" />
+        </mxCell>
+        <mxCell id="P6_COLLECT_DATA" parent="1" style="rounded=1;arcSize=8;fillColor=#FFFFFF;strokeColor=#7DD3FC;strokeWidth=1.5;fontColor=#0F172A;align=center;verticalAlign=middle;html=1;fontSize=11.5;" value="&lt;b&gt;ESP32 Thu thập toàn bộ dữ liệu cảm biến &amp;amp; trạng thái hệ thống&lt;/b&gt;&lt;br/&gt;(Lấy từ Phân hệ 2: Cảm biến | Phân hệ 3: Trạng thái Bơm | Phân hệ 4: Biểu cảm)" vertex="1">
+          <mxGeometry height="55" width="540" x="2070" y="1835" as="geometry" />
+        </mxCell>
+        <mxCell id="P6_JSON_PACKET" parent="1" style="rounded=1;arcSize=6;fillColor=#FFFFFF;strokeColor=#0284C7;strokeWidth=1.5;fontColor=#0369A1;align=left;spacingLeft=15;verticalAlign=middle;html=1;fontSize=11;" value="&lt;b&gt;Đóng gói dữ liệu thành gói tin JSON chuẩn IoT:&lt;/b&gt;&lt;br&gt; • &lt;b&gt;Soil Moisture ADC&lt;/b&gt; (Độ ẩm đất ADC &amp;amp; quy đổi %)&lt;br&gt; • &lt;b&gt;Light Intensity&lt;/b&gt; (Cường độ ánh sáng Lux)&lt;br&gt;&lt;br&gt; • &lt;b&gt;Temperature &amp;amp; Pressure&lt;/b&gt; (Nhiệt độ °C &amp;amp; Áp suất hPa)&lt;br&gt; • &lt;b&gt;Acceleration X, Y, Z&lt;/b&gt; (Gia tốc &amp;amp; Góc nghiêng Tilt)&lt;br&gt; • &lt;b&gt;Water Level&lt;/b&gt; (Mức nước còn lại trong bình)&lt;br&gt; • &lt;b&gt;Pump Status&lt;/b&gt; (Bơm ON/OFF, Chu kỳ tưới hiện tại)&lt;br&gt; • &lt;b&gt;Plant Emotion&lt;/b&gt; (Biểu cảm hai mắt OLED hiện tại)&lt;br&gt; • &lt;b&gt;System Status&lt;/b&gt; (Mã lỗi, Mức sóng Wi-Fi RSSI, Uptime)&lt;br&gt; • &lt;b&gt;Timestamp&lt;/b&gt; (Thời gian thực đồng bộ từ NTP)" vertex="1">
+          <mxGeometry height="180" width="640" x="2020" y="1910" as="geometry" />
+        </mxCell>
+        <mxCell id="P6_DEC_WIFI" parent="1" style="rhombus;whiteSpace=wrap;html=1;fillColor=#FEF08A;strokeColor=#CA8A04;strokeWidth=2;fontColor=#854D0E;fontStyle=1;align=center;verticalAlign=middle;fontSize=11;" value="&lt;b&gt;Wi-Fi có đang&lt;br/&gt;kết nối không?&lt;/b&gt;" vertex="1">
+          <mxGeometry height="80" width="360" x="2160" y="2115" as="geometry" />
+        </mxCell>
+        <mxCell id="P6_OFFLINE_BUFFER" parent="1" style="rounded=1;arcSize=8;fillColor=#FEF3C7;strokeColor=#D97706;strokeWidth=2;fontColor=#92400E;align=center;verticalAlign=middle;html=1;fontSize=11;" value="&lt;b&gt;NHÁNH NO: MẤT KẾT NỐI MẠNG WI-FI&lt;/b&gt;&lt;br/&gt; • Lưu tạm gói tin JSON quan trọng vào bộ nhớ đệm (Flash/RAM Buffer)&lt;br/&gt; • Tiếp tục duy trì 100% điều khiển tự động tại chỗ trên ESP32&lt;br/&gt; • Định kỳ 30s thử tái kết nối Wi-Fi ngầm (Non-blocking reconnect)" vertex="1">
+          <mxGeometry height="95" width="335" x="2445" y="2220" as="geometry" />
+        </mxCell>
+        <mxCell id="P6_SYNC_BACKLOG" parent="1" style="rounded=1;arcSize=8;fillColor=#DCFCE7;strokeColor=#16A34A;strokeWidth=2;fontColor=#166534;align=center;verticalAlign=middle;html=1;fontSize=11;fontStyle=1;" value="&lt;b&gt;Đồng bộ dữ liệu bù khi có mạng:&lt;/b&gt;&lt;br/&gt; Khi Wi-Fi kết nối thành công, tự động đẩy toàn bộ dữ liệu lịch sử còn thiếu lên Cloud Server" vertex="1">
+          <mxGeometry height="70" width="335" x="2445" y="2335" as="geometry" />
+        </mxCell>
+        <mxCell id="P6_MQTT_SEND" parent="1" style="rounded=1;arcSize=8;fillColor=#FFFFFF;strokeColor=#7DD3FC;strokeWidth=1.5;fontColor=#0F172A;align=center;verticalAlign=middle;html=1;fontSize=11.5;" value="&lt;b&gt;NHÁNH YES: ESP32 gửi dữ liệu lên Cloud Server&lt;/b&gt;&lt;br/&gt; Gửi bản tin JSON qua giao thức &lt;b&gt;MQTT Publish&lt;/b&gt; (Topic: &lt;code&gt;plant/telemetry&lt;/code&gt;) hoặc &lt;b&gt;HTTPS POST&lt;/b&gt;" vertex="1">
+          <mxGeometry height="65" width="540" x="1900" y="2278" as="geometry" />
+        </mxCell>
+        <mxCell id="P6_CLOUD_PLATFORM" parent="1" style="shape=process;whiteSpace=wrap;html=1;backgroundOutline=1;rounded=1;arcSize=8;fillColor=#F1F5F9;strokeColor=#64748B;strokeWidth=1.5;fontColor=#0F172A;fontSize=11.5;" value="&lt;b&gt;Cloud Server &amp;amp; Database tiếp nhận và xử lý dữ liệu:&lt;/b&gt;&lt;br/&gt; • Lưu trữ toàn bộ dữ liệu cảm biến vào &lt;b&gt;Database&lt;/b&gt; (Firebase / InfluxDB Time-Series)&lt;br/&gt; • Cập nhật bản sao trạng thái cây trồng theo thời gian thực (Device Shadow / Digital Twin)&lt;br/&gt; • Phân tích dữ liệu &amp;amp; Kích hoạt cảnh báo tự động khi phát hiện bất thường (Hết nước, nhiệt độ quá cao)" vertex="1">
+          <mxGeometry height="85" width="640" x="2000" y="2448" as="geometry" />
+        </mxCell>
+        <mxCell id="P6_PUSH_MOBILE" parent="1" style="rounded=1;arcSize=8;fillColor=#FFFFFF;strokeColor=#7DD3FC;strokeWidth=1.5;fontColor=#0F172A;align=center;verticalAlign=middle;html=1;fontSize=11.5;" value="&lt;b&gt;Đẩy dữ liệu mới nhất đến Mobile Application:&lt;/b&gt;&lt;br/&gt; Gửi dữ liệu thời gian thực qua giao thức &lt;b&gt;WebSocket&lt;/b&gt;, &lt;b&gt;MQTT Broker&lt;/b&gt; hoặc &lt;b&gt;Firebase FCM Notification&lt;/b&gt;" vertex="1">
+          <mxGeometry height="60" width="580" x="2030" y="2575" as="geometry" />
+        </mxCell>
+        <mxCell id="P6_MOBILE_APP_UI" parent="1" style="rounded=1;arcSize=6;fillColor=#0369A1;strokeColor=#075985;fontColor=#FFFFFF;fontStyle=1;align=center;verticalAlign=middle;html=1;fontSize=11.5;shadow=1;" value="&lt;b&gt;GIAO DIỆN MOBILE APPLICATION (NGƯỜI DÙNG GIÁM SÁT &amp;amp; ĐIỀU KHIỂN TỪ XA):&lt;/b&gt;&lt;br/&gt; • &lt;b&gt;Trang Home:&lt;/b&gt; Trạng thái tổng quan, Avatar khuôn mặt biểu cảm đồng bộ 1:1 với 2 màn hình OLED&lt;br/&gt; • &lt;b&gt;Trang Giám sát:&lt;/b&gt; Đồ thị trực quan thời gian thực độ ẩm đất, nhiệt độ, ánh sáng, chất lượng không khí&lt;br/&gt; • &lt;b&gt;Trang Điều khiển:&lt;/b&gt; Nút tưới nước thủ công an toàn, nút dừng tưới khẩn cấp, cài đặt ngưỡng ADC tự động&lt;br/&gt; • &lt;b&gt;Trang AI Chatbot:&lt;/b&gt; Khung chat văn bản và giọng nói trực tiếp với AI cây trồng mọi lúc mọi nơi&lt;br/&gt; • &lt;b&gt;Trung tâm cảnh báo:&lt;/b&gt; Nhận thông báo đẩy (Push Notification) khi hết nước, cảm biến lỗi hoặc chậu bị lắc" vertex="1">
+          <mxGeometry height="140" width="680" x="1980" y="2670" as="geometry" />
+        </mxCell>
+        <mxCell id="P6_DOWNLINK_CMD" parent="1" style="rounded=1;arcSize=8;fillColor=#E0E7FF;strokeColor=#4F46E5;strokeWidth=2;fontColor=#3730A3;align=center;verticalAlign=middle;html=1;fontSize=11.5;fontStyle=1;" value="&lt;b&gt;KÊNH ĐIỀU KHIỂN XUỐNG TỪ XA (DOWNLINK COMMAND):&lt;/b&gt;&lt;br/&gt; Người dùng gửi lệnh từ Mobile App (Lệnh tưới thủ công, dừng khẩn cấp, đổi ngưỡng)&lt;br/&gt; ➔ Cloud truyền lệnh xuống ESP32 qua MQTT ➔ ESP32 kiểm tra an toàn &amp;amp; thực thi tại &lt;b&gt;PHÂN HỆ 3&lt;/b&gt;" vertex="1">
+          <mxGeometry height="75" width="620" x="2010" y="2850" as="geometry" />
+        </mxCell>
+        <mxCell id="P6_CYCLE_WAIT" parent="1" style="rounded=1;arcSize=8;fillColor=#FFFFFF;strokeColor=#7DD3FC;strokeWidth=1.5;fontColor=#0F172A;align=center;verticalAlign=middle;html=1;fontSize=11.5;" value="&lt;b&gt;Hoàn thành chu trình truyền thông IoT&lt;/b&gt;&lt;br/&gt;Chờ chu kỳ đóng gói và gửi dữ liệu tiếp theo (Chu kỳ T = 5 - 15 giây)" vertex="1">
+          <mxGeometry height="55" width="480" x="2070" y="2960" as="geometry" />
+        </mxCell>
+        <mxCell id="edge_76" edge="1" parent="1" source="P6_COLLECT_DATA" style="edgeStyle=orthogonalEdgeStyle;rounded=1;orthogonalLoop=1;jettySize=auto;html=1;strokeColor=#475569;strokeWidth=1.8;fontColor=#1E293B;fontSize=11;" target="P6_JSON_PACKET" value="">
+          <mxGeometry relative="1" as="geometry" />
+        </mxCell>
+        <mxCell id="edge_77" edge="1" parent="1" source="P6_JSON_PACKET" style="edgeStyle=orthogonalEdgeStyle;rounded=1;orthogonalLoop=1;jettySize=auto;html=1;strokeColor=#475569;strokeWidth=1.8;fontColor=#1E293B;fontSize=11;" target="P6_DEC_WIFI" value="">
+          <mxGeometry relative="1" as="geometry" />
+        </mxCell>
+        <mxCell id="edge_78" edge="1" parent="1" source="P6_DEC_WIFI" style="edgeStyle=orthogonalEdgeStyle;rounded=1;orthogonalLoop=1;jettySize=auto;html=1;strokeColor=#DC2626;strokeWidth=2;fontColor=#B91C1C;fontStyle=1;fontSize=11;exitX=1;exitDx=0;exitDy=0;exitY=0.5;exitDx=0;exitDy=0;entryX=0.5;entryDx=0;entryDy=0;entryY=0;entryDx=0;entryDy=0;" target="P6_OFFLINE_BUFFER" value="NO (Mất Wi-Fi)">
+          <mxGeometry relative="1" as="geometry" />
+        </mxCell>
+        <mxCell id="edge_79" edge="1" parent="1" source="P6_OFFLINE_BUFFER" style="edgeStyle=orthogonalEdgeStyle;rounded=1;orthogonalLoop=1;jettySize=auto;html=1;strokeColor=#475569;strokeWidth=1.8;fontColor=#1E293B;fontSize=11;" target="P6_SYNC_BACKLOG" value="">
+          <mxGeometry relative="1" as="geometry" />
+        </mxCell>
+        <mxCell id="edge_80" edge="1" parent="1" source="P6_DEC_WIFI" style="edgeStyle=orthogonalEdgeStyle;rounded=1;orthogonalLoop=1;jettySize=auto;html=1;strokeColor=#16A34A;strokeWidth=2;fontColor=#15803D;fontStyle=1;fontSize=11;exitX=0.5;exitDx=0;exitDy=0;exitY=1;exitDx=0;exitDy=0;entryX=0.5;entryDx=0;entryDy=0;entryY=0;entryDx=0;entryDy=0;" target="P6_MQTT_SEND" value="YES (Đang Online)">
+          <mxGeometry relative="1" as="geometry" />
+        </mxCell>
+        <mxCell id="edge_81" edge="1" parent="1" source="P6_MQTT_SEND" style="edgeStyle=orthogonalEdgeStyle;rounded=1;orthogonalLoop=1;jettySize=auto;html=1;strokeColor=#475569;strokeWidth=1.8;fontColor=#1E293B;fontSize=11;" target="P6_CLOUD_PLATFORM" value="">
+          <mxGeometry relative="1" as="geometry" />
+        </mxCell>
+        <mxCell id="edge_82" edge="1" parent="1" source="P6_SYNC_BACKLOG" style="edgeStyle=orthogonalEdgeStyle;rounded=1;orthogonalLoop=1;jettySize=auto;html=1;strokeColor=#475569;strokeWidth=1.8;fontColor=#1E293B;fontSize=11;exitX=0.5;exitDx=0;exitDy=0;exitY=1;exitDx=0;exitDy=0;entryX=0.85;entryDx=0;entryDy=0;entryY=0;entryDx=0;entryDy=0;" target="P6_CLOUD_PLATFORM" value="Đẩy dữ liệu bù">
+          <mxGeometry relative="1" as="geometry" />
+        </mxCell>
+        <mxCell id="edge_83" edge="1" parent="1" source="P6_CLOUD_PLATFORM" style="edgeStyle=orthogonalEdgeStyle;rounded=1;orthogonalLoop=1;jettySize=auto;html=1;strokeColor=#475569;strokeWidth=1.8;fontColor=#1E293B;fontSize=11;" target="P6_PUSH_MOBILE" value="">
+          <mxGeometry relative="1" as="geometry" />
+        </mxCell>
+        <mxCell id="edge_84" edge="1" parent="1" source="P6_PUSH_MOBILE" style="edgeStyle=orthogonalEdgeStyle;rounded=1;orthogonalLoop=1;jettySize=auto;html=1;strokeColor=#475569;strokeWidth=1.8;fontColor=#1E293B;fontSize=11;" target="P6_MOBILE_APP_UI" value="">
+          <mxGeometry relative="1" as="geometry" />
+        </mxCell>
+        <mxCell id="edge_85" edge="1" parent="1" source="P6_MOBILE_APP_UI" style="edgeStyle=orthogonalEdgeStyle;rounded=1;orthogonalLoop=1;jettySize=auto;html=1;strokeColor=#475569;strokeWidth=1.8;fontColor=#1E293B;fontSize=11;" target="P6_DOWNLINK_CMD" value="">
+          <mxGeometry relative="1" as="geometry" />
+        </mxCell>
+        <mxCell id="edge_86" edge="1" parent="1" source="P6_DOWNLINK_CMD" style="edgeStyle=orthogonalEdgeStyle;rounded=1;orthogonalLoop=1;jettySize=auto;html=1;strokeColor=#475569;strokeWidth=1.8;fontColor=#1E293B;fontSize=11;" target="P6_CYCLE_WAIT" value="">
+          <mxGeometry relative="1" as="geometry" />
+        </mxCell>
+        <mxCell id="LINK_P1_TO_P2" edge="1" parent="1" source="P1_GOTO_LOOP" style="edgeStyle=orthogonalEdgeStyle;rounded=1;orthogonalLoop=1;jettySize=auto;html=1;strokeColor=#0F766E;strokeWidth=3;fontColor=#0F766E;fontStyle=1;fontSize=11;exitX=1;exitDx=0;exitDy=0;exitY=0.5;exitDx=0;exitDy=0;entryX=0;entryDx=0;entryDy=0;entryY=0.5;entryDx=0;entryDy=0;" target="P2_LOOP_ENTRY" value="Bắt đầu vòng lặp chính (ESP32 Main Loop)">
+          <mxGeometry relative="1" as="geometry">
+            <Array as="points">
+              <mxPoint x="900" y="1462" />
+              <mxPoint x="900" y="262" />
+            </Array>
+          </mxGeometry>
+        </mxCell>
+        <mxCell id="LINK_P2_TO_P3" edge="1" parent="1" source="P2_DISPATCHER" style="edgeStyle=orthogonalEdgeStyle;rounded=1;orthogonalLoop=1;jettySize=auto;html=1;strokeColor=#15803D;strokeWidth=3;fontColor=#15803D;fontStyle=1;fontSize=11;exitX=1;exitDx=0;exitDy=0;exitY=0.3;exitDx=0;exitDy=0;entryX=0;entryDx=0;entryDy=0;entryY=0.5;entryDx=0;entryDy=0;" target="P3_START_EVAL" value="Dữ liệu Soil Moisture ADC &amp; Mực nước bình chứa">
+          <mxGeometry relative="1" as="geometry">
+            <Array as="points">
+              <mxPoint x="1860" y="1178" />
+              <mxPoint x="1860" y="262" />
+            </Array>
+          </mxGeometry>
+        </mxCell>
+        <mxCell id="LINK_P2_TO_P4" edge="1" parent="1" source="P2_DISPATCHER" style="edgeStyle=orthogonalEdgeStyle;rounded=1;orthogonalLoop=1;jettySize=auto;html=1;strokeColor=#7E22CE;strokeWidth=3;fontColor=#6B21A8;fontStyle=1;fontSize=11;exitX=0;exitDx=0;exitDy=0;exitY=0.7;exitDx=0;exitDy=0;entryX=0.5;entryDx=0;entryDy=0;entryY=0;entryDx=0;entryDy=0;" target="P4_GET_INPUTS" value="Dữ liệu Môi trường (Temp, Lux, Rung lắc MPU6050)">
+          <mxGeometry relative="1" as="geometry">
+            <Array as="points">
+              <mxPoint x="895" y="1222" />
+              <mxPoint x="895" y="1730" />
+              <mxPoint x="465" y="1730" />
+            </Array>
+          </mxGeometry>
+        </mxCell>
+        <mxCell id="LINK_P2_TO_P6" edge="1" parent="1" source="P2_DISPATCHER" style="edgeStyle=orthogonalEdgeStyle;rounded=1;orthogonalLoop=1;jettySize=auto;html=1;strokeColor=#0284C7;strokeWidth=3;fontColor=#0369A1;fontStyle=1;fontSize=11;exitX=0.8;exitDx=0;exitDy=0;exitY=1;exitDx=0;exitDy=0;entryX=0;entryDx=0;entryDy=0;entryY=0.5;entryDx=0;entryDy=0;" target="P6_COLLECT_DATA" value="Toàn bộ Telemetry 6 cảm biến để đóng gói JSON">
+          <mxGeometry relative="1" as="geometry">
+            <Array as="points">
+              <mxPoint x="1596" y="1730" />
+              <mxPoint x="1855" y="1730" />
+              <mxPoint x="1855" y="1862" />
+            </Array>
+          </mxGeometry>
+        </mxCell>
+        <mxCell id="LINK_P3_TO_P4" edge="1" parent="1" source="P3_YES_UPDATE_STATE" style="edgeStyle=orthogonalEdgeStyle;rounded=1;orthogonalLoop=1;jettySize=auto;html=1;strokeColor=#E11D48;strokeWidth=3;dashed=1;fontColor=#BE123C;fontStyle=1;fontSize=11;exitX=0;exitDx=0;exitDy=0;exitY=0.5;exitDx=0;exitDy=0;entryX=1;entryDx=0;entryDy=0;entryY=0.5;entryDx=0;entryDy=0;" target="P4_DEC_SOIL" value="Trạng thái Đủ nước (^ ^) / Hết nước bình (&gt;&lt;)">
+          <mxGeometry relative="1" as="geometry">
+            <Array as="points">
+              <mxPoint x="1835" y="647" />
+              <mxPoint x="1835" y="1750" />
+              <mxPoint x="895" y="1750" />
+              <mxPoint x="895" y="2277" />
+            </Array>
+          </mxGeometry>
+        </mxCell>
+        <mxCell id="LINK_P5_TO_P3" edge="1" parent="1" source="P5_INTENT_2" style="edgeStyle=orthogonalEdgeStyle;rounded=1;orthogonalLoop=1;jettySize=auto;html=1;strokeColor=#15803D;strokeWidth=3;fontColor=#15803D;fontStyle=1;fontSize=11;exitX=0.5;exitDx=0;exitDy=0;exitY=0;exitDx=0;exitDy=0;entryX=0.2;entryDx=0;entryDy=0;entryY=1;entryDx=0;entryDy=0;" target="P3_START_EVAL" value="Lệnh giọng nói: Tưới nước an toàn / Dừng tưới khẩn cấp">
+          <mxGeometry relative="1" as="geometry">
+            <Array as="points">
+              <mxPoint x="1377" y="1720" />
+              <mxPoint x="2190" y="1720" />
+            </Array>
+          </mxGeometry>
+        </mxCell>
+        <mxCell id="LINK_P5_TO_P4" edge="1" parent="1" source="P5_RECORD_BUFFER" style="edgeStyle=orthogonalEdgeStyle;rounded=1;orthogonalLoop=1;jettySize=auto;html=1;strokeColor=#7E22CE;strokeWidth=3;fontColor=#6B21A8;fontStyle=1;fontSize=11;exitX=0;exitDx=0;exitDy=0;exitY=0.5;exitDx=0;exitDy=0;entryX=1;entryDx=0;entryDy=0;entryY=0.5;entryDx=0;entryDy=0;" target="P4_DEC_VOICE" value="Chiếm quyền biểu cảm: Đang nghe (o_o), Đang nói (^o^)">
+          <mxGeometry relative="1" as="geometry">
+            <Array as="points">
+              <mxPoint x="905" y="2050" />
+              <mxPoint x="905" y="2060" />
+            </Array>
+          </mxGeometry>
+        </mxCell>
+        <mxCell id="LINK_P6_TO_P3" edge="1" parent="1" source="P6_DOWNLINK_CMD" style="edgeStyle=orthogonalEdgeStyle;rounded=1;orthogonalLoop=1;jettySize=auto;html=1;strokeColor=#0284C7;strokeWidth=3;fontColor=#0369A1;fontStyle=1;fontSize=11;exitX=1;exitDx=0;exitDy=0;exitY=0.5;exitDx=0;exitDy=0;entryX=1;entryDx=0;entryDy=0;entryY=0.5;entryDx=0;entryDy=0;" target="P3_START_EVAL" value="Lệnh điều khiển từ xa từ Mobile App (Tưới / Dừng tưới)">
+          <mxGeometry relative="1" as="geometry">
+            <Array as="points">
+              <mxPoint x="2825" y="2707" />
+              <mxPoint x="2825" y="262" />
+            </Array>
+          </mxGeometry>
+        </mxCell>
+        <mxCell id="BOTTOM_LEGEND" parent="1" style="rounded=1;arcSize=6;fillColor=#0F172A;strokeColor=#1E293B;fontColor=#FFFFFF;align=center;verticalAlign=middle;html=1;shadow=1;fontSize=11;" value="&lt;div style=&quot;line-height:1.45; text-align:left; padding:4px 10px;&quot;&gt;     &lt;b style=&quot;font-size:12.5px; color:#38BDF8;&quot;&gt;CHÚ THÍCH KỸ THUẬT &amp;amp; NGUYÊN TẮC VẬN HÀNH HỆ THỐNG ESP32 + AI CHATBOT:&lt;/b&gt;&lt;br/&gt;     • &lt;b style=&quot;color:#22C55E;&quot;&gt;Phân hệ Tưới nước (P3):&lt;/b&gt; Chu kỳ tưới chuẩn định lượng &lt;b&gt;đúng 3 giây&lt;/b&gt; ➔ Bắt buộc &lt;b&gt;tắt bơm 1–2 giây&lt;/b&gt; chờ nước ngấm rễ và ADC ổn định ➔ Đọc lại ADC. Giới hạn an toàn &lt;b&gt;tối đa 5 chu kỳ liên tiếp&lt;/b&gt; để chống tràn nước khi đứt dây / tuột cảm biến. Khi mất mạng Internet, tưới tự động vẫn chạy 100% bình thường.&lt;br/&gt;     • &lt;b style=&quot;color:#C084FC;&quot;&gt;Phân hệ OLED (P4):&lt;/b&gt; 2 màn hình OLED 0.96&amp;quot; đóng vai trò 2 mắt nhân vật ảo (OLED 1: Mắt trái, OLED 2: Mắt phải) hiển thị đồng bộ hành vi, &lt;i&gt;tuyệt đối không hiển thị cả khuôn mặt trên từng màn hình&lt;/i&gt;. Kèm hoạt ảnh chớp mắt tự nhiên.&lt;br/&gt;     • &lt;b style=&quot;color:#818CF8;&quot;&gt;Phân hệ Voice AI (P5):&lt;/b&gt; Micro bắt âm ➔ STT ➔ Phân loại Intent 3 nhóm (Hỏi thăm tình trạng, Điều khiển thiết bị, Trò chuyện). Phản hồi AI dựa trên dữ liệu cảm biến thực tế, câu thoại cá tính sinh động.&lt;br/&gt;     • &lt;b style=&quot;color:#38BDF8;&quot;&gt;Phân hệ Cloud &amp;amp; Mobile App (P6):&lt;/b&gt; Đóng gói JSON chuẩn IoT, tự động đệm dữ liệu vào Flash/RAM khi mất Wi-Fi, đồng bộ bù khi kết nối lại (Sync Backlog). Mobile App hiển thị Avatar biểu cảm đồng bộ OLED thời gian thực.&lt;br/&gt;     • &lt;i&gt;Đường nét liền: Luồng xử lý thuật toán tuần tự | Đường nét đứt màu / Mũi tên đậm: Kênh liên kết dữ liệu &amp;amp; lệnh điều khiển liên phân hệ do ESP32 điều phối.&lt;/i&gt;   &lt;/div&gt;" vertex="1">
+          <mxGeometry height="110" width="2750" x="50" y="3060" as="geometry" />
+        </mxCell>
+        <mxCell id="Rjfj3IYyAmfizSyvaLUE-1" edge="1" parent="1" source="P4_VOICE_EMO" style="edgeStyle=orthogonalEdgeStyle;rounded=1;orthogonalLoop=1;jettySize=auto;html=1;strokeColor=#475569;strokeWidth=1.8;fontColor=#1E293B;fontSize=11;exitX=0.5;exitDx=0;exitDy=0;exitY=1;exitDx=0;exitDy=0;entryDx=0;entryDy=0;" target="P4_SOIL_EMO" value="">
+          <mxGeometry relative="1" as="geometry">
+            <mxPoint x="708" y="2210" as="sourcePoint" />
+            <mxPoint x="710" y="2545" as="targetPoint" />
+          </mxGeometry>
+        </mxCell>
+        <mxCell id="P4_SOIL_EMO" parent="1" style="rounded=1;arcSize=8;fillColor=#FEF3C7;strokeColor=#D97706;strokeWidth=2;fontColor=#92400E;align=center;verticalAlign=middle;html=1;fontSize=11;" value="&lt;b&gt;Biểu cảm KHÁT NƯỚC / BUỒN (T_T hoặc &amp;gt;&amp;lt;)&lt;/b&gt;&lt;br/&gt; Hai mắt chớp nhăn nhó, báo hiệu đất khô cằn hoặc bình hết nước" vertex="1">
+          <mxGeometry height="70" width="305" x="590" y="2330" as="geometry" />
+        </mxCell>
+      </root>
+    </mxGraphModel>
+  </diagram>
+</mxfile>

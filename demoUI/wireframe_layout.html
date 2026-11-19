@@ -1,0 +1,494 @@
+<!DOCTYPE html>
+<html lang="vi">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>[WIREFRAME v3] Smart Plant Desktop App - Multi-Page & Smart Status Bar</title>
+  <style>
+    :root {
+      --bg-app: #efeff2;
+      --bg-panel: #ffffff;
+      --bg-muted: #e6e6eb;
+      --border-strong: #222222;
+      --border-soft: #999999;
+      --text-main: #111111;
+      --text-muted: #555555;
+      --font-mono: "Consolas", "Courier New", monospace;
+      --font-sans: "Segoe UI", Tahoma, Geneva, Verdana, sans-serif;
+    }
+
+    * { box-sizing: border-box; margin: 0; padding: 0; }
+
+    body {
+      font-family: var(--font-sans);
+      background: var(--bg-app);
+      color: var(--text-main);
+      height: 100vh;
+      display: flex;
+      flex-direction: column;
+      overflow: hidden;
+      user-select: none;
+    }
+
+    /* 1. SMART TOP BAR (Kiểu thanh trạng thái điện thoại gọn gàng) */
+    .top-bar {
+      height: 50px;
+      background: var(--bg-panel);
+      border-bottom: 2px solid var(--border-strong);
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      padding: 0 16px;
+      flex-shrink: 0;
+    }
+
+    .brand-box { display: flex; align-items: center; gap: 10px; }
+    .brand-tag {
+      background: var(--border-strong);
+      color: #fff;
+      font-family: var(--font-mono);
+      font-size: 11px;
+      font-weight: bold;
+      padding: 4px 8px;
+    }
+
+    .status-cluster {
+      display: flex;
+      align-items: center;
+      gap: 10px;
+      font-family: var(--font-mono);
+      font-size: 11px;
+    }
+
+    .status-pill {
+      display: flex;
+      align-items: center;
+      gap: 6px;
+      border: 1.5px solid var(--border-strong);
+      background: #f4f4f6;
+      padding: 4px 10px;
+      cursor: pointer;
+    }
+
+    .status-pill.error-mode {
+      background: #111;
+      color: #fff;
+    }
+
+    .led-dot {
+      width: 11px;
+      height: 11px;
+      border-radius: 50%;
+      border: 2px solid currentColor;
+      background: currentColor;
+    }
+
+    .led-dot.pending {
+      background: repeating-linear-gradient(45deg, #111, #111 3px, #fff 3px, #fff 6px);
+    }
+
+    /* 4 vạch sóng Wi-Fi như điện thoại */
+    .wifi-bars {
+      display: flex;
+      align-items: flex-end;
+      gap: 2px;
+      height: 15px;
+    }
+    .wifi-bars span {
+      width: 4px;
+      border: 1px solid var(--border-strong);
+      background: #fff;
+    }
+    .wifi-bars span.on { background: var(--border-strong); }
+    .wifi-bars span:nth-child(1) { height: 5px; }
+    .wifi-bars span:nth-child(2) { height: 8px; }
+    .wifi-bars span:nth-child(3) { height: 11px; }
+    .wifi-bars span:nth-child(4) { height: 15px; }
+
+    /* THANH SIMULATOR */
+    .sim-bar {
+      height: 36px;
+      background: #dcdce2;
+      border-bottom: 1px dashed var(--border-strong);
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      padding: 0 16px;
+      font-size: 12px;
+      flex-shrink: 0;
+    }
+
+    button {
+      font-family: var(--font-sans);
+      font-size: 11px;
+      font-weight: 600;
+      padding: 3px 9px;
+      border: 1.5px solid var(--border-strong);
+      background: #fff;
+      cursor: pointer;
+      box-shadow: 2px 2px 0 var(--border-strong);
+    }
+    button.active, button:active {
+      background: var(--border-strong);
+      color: #fff;
+      box-shadow: 1px 1px 0 var(--border-strong);
+    }
+
+    /* BỐ CỤC CHÍNH: SIDEBAR 4 TRANG + NỘI DUNG TRANG */
+    .app-body {
+      flex: 1;
+      display: grid;
+      grid-template-columns: 205px 1fr;
+      gap: 12px;
+      padding: 10px 14px;
+      overflow: hidden;
+    }
+
+    .sidebar {
+      background: var(--bg-panel);
+      border: 2px solid var(--border-strong);
+      display: flex;
+      flex-direction: column;
+      padding: 8px;
+      gap: 8px;
+    }
+
+    .nav-btn {
+      text-align: left;
+      padding: 10px;
+      font-family: var(--font-mono);
+      font-size: 11px;
+      line-height: 1.35;
+    }
+
+    .page-view { display: none; height: 100%; overflow: hidden; }
+    .page-view.active-page { display: grid; }
+
+    /* TRANG 1: DASHBOARD */
+    #page-dashboard {
+      grid-template-columns: 335px 1fr;
+      gap: 12px;
+    }
+
+    .panel {
+      background: var(--bg-panel);
+      border: 2px solid var(--border-strong);
+      padding: 10px;
+      display: flex;
+      flex-direction: column;
+      gap: 8px;
+    }
+
+    .panel-title {
+      font-family: var(--font-mono);
+      font-size: 11px;
+      font-weight: bold;
+      background: var(--border-strong);
+      color: #fff;
+      padding: 3px 6px;
+    }
+
+    .oled-screen {
+      background: #111;
+      color: #fff;
+      height: 100px;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      justify-content: center;
+      font-family: var(--font-mono);
+      border: 3px double #777;
+    }
+
+    .kpi-row { display: grid; grid-template-columns: repeat(4, 1fr); gap: 10px; }
+    .kpi-card {
+      background: #fff;
+      border: 2px solid var(--border-soft);
+      padding: 10px;
+      cursor: pointer;
+    }
+    .kpi-card.active-card {
+      border: 3px solid var(--border-strong);
+      box-shadow: 4px 4px 0 var(--border-strong);
+    }
+
+    /* TRANG 3 & 4 GRID */
+    .two-col-grid {
+      grid-template-columns: 1fr 1fr;
+      grid-template-rows: auto 1fr;
+      gap: 12px;
+    }
+
+    .form-row {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      margin-bottom: 8px;
+      font-size: 12px;
+    }
+    .form-row input {
+      width: 60%;
+      padding: 4px 6px;
+      font-family: var(--font-mono);
+      border: 1px solid var(--border-strong);
+      background: #f4f4f6;
+    }
+
+    .code-box {
+      flex: 1;
+      background: #f4f4f6;
+      border: 1px solid var(--border-strong);
+      padding: 8px;
+      font-family: var(--font-mono);
+      font-size: 11px;
+      white-space: pre;
+      overflow-y: auto;
+    }
+  </style>
+</head>
+<body>
+
+  <!-- TOP HEADER GỌN NHƯ ĐIỆN THOẠI -->
+  <header class="top-bar">
+    <div class="brand-box">
+      <span class="brand-tag">SMART PLANT COMPANION</span>
+      <strong id="page-title" style="font-size: 13px;">Trang 1: Tổng quan & Chăm sóc (Main Dashboard)</strong>
+    </div>
+
+    <div class="status-cluster">
+      <!-- Đèn trạng thái (Click nhảy sang trang Debug) -->
+      <div class="status-pill" id="pill-led" onclick="switchPage('debug')" title="Click để mở trang Debug xem chi tiết mã lỗi">
+        <span class="led-dot" id="led-dot"></span>
+        <strong id="led-text">RUNNING</strong>
+      </div>
+
+      <!-- Số bản ghi DB (Click nhảy sang trang Database) -->
+      <div class="status-pill" onclick="switchPage('database')" title="Click để mở Kho Dữ Liệu SQLite">
+        <span>🗄 DB:</span>
+        <strong id="db-count">120</strong>
+      </div>
+
+      <!-- Cột sóng Wi-Fi như điện thoại (Click mở trang Cấu hình Wi-Fi) -->
+      <div class="status-pill" onclick="switchPage('settings')" title="Click để mở Cấu hình Wi-Fi">
+        <div class="wifi-bars" id="wifi-bars">
+          <span class="on"></span><span class="on"></span><span class="on"></span><span class="on"></span>
+        </div>
+        <span>Wi-Fi</span>
+      </div>
+
+      <!-- Đồng hồ ngắn gọn -->
+      <strong style="font-size: 13px; padding-left: 4px;">15:12</strong>
+    </div>
+  </header>
+
+  <!-- SIMULATOR -->
+  <section class="sim-bar">
+    <div><strong>[UX SIMULATOR]</strong> Bấm thử kịch bản để xem Đèn trạng thái (Running/Pending/Error) và Cột sóng Wi-Fi đổi trạng thái:</div>
+    <div style="display: flex; gap: 6px;">
+      <button class="active" onclick="setScenario('normal', this)">1. Bình thường (Running)</button>
+      <button onclick="setScenario('dry', this)">2. Đất khô (Pending)</button>
+      <button onclick="setScenario('watering', this)">3. Đang tưới (Pending)</button>
+      <button onclick="setScenario('tilt', this)">4. Ngã chậu (Error!)</button>
+      <button onclick="setScenario('empty_tank', this)">5. Cạn bình & Sóng yếu (Error!)</button>
+    </div>
+  </section>
+
+  <!-- BODY: SIDEBAR 4 TRANG + CONTENT -->
+  <div class="app-body">
+    <aside class="sidebar">
+      <div class="panel-title" style="text-align: center;">ĐIỀU HƯỚNG (4 TRANG)</div>
+      <button class="nav-btn active" id="nav-dashboard" onclick="switchPage('dashboard')">1. Tổng quan & Cây<br><small>(Main Dashboard)</small></button>
+      <button class="nav-btn" id="nav-database" onclick="switchPage('database')">2. Kho Dữ liệu DB<br><small>(SQLite Explorer)</small></button>
+      <button class="nav-btn" id="nav-settings" onclick="switchPage('settings')">3. Cấu hình & Nạp FW<br><small>(Wi-Fi / OTA / Calib)</small></button>
+      <button class="nav-btn" id="nav-debug" onclick="switchPage('debug')">4. Debug & Soi Lỗi<br><small>(JSON / Logs / Diag)</small></button>
+    </aside>
+
+    <!-- TRANG 1: DASHBOARD (Sạch sẽ, không có Log/JSON thô) -->
+    <main class="page-view active-page" id="page-dashboard">
+      <div style="display: flex; flex-direction: column; gap: 10px;">
+        <div class="panel">
+          <div class="panel-title">BIỂU CẢM CHẬU CÂY (OLED)</div>
+          <div class="oled-screen">
+            <div style="font-size: 28px; font-weight: bold;" id="val-eyes">( ^ ‿ ^ )</div>
+            <div style="font-size: 10px; color: #bbb; margin-top: 4px;" id="val-emotion">STATE: HAPPY_IDLE</div>
+          </div>
+          <div style="background: #e9e9ed; padding: 8px; font-size: 11px; font-style: italic; border: 1px dashed #222;" id="val-speech">
+            "Đất đủ ẩm, nắng dịu nhẹ, tui đang rất yêu đời nha Sen ơi!"
+          </div>
+        </div>
+
+        <div class="panel" style="flex: 1;">
+          <div class="panel-title">TRẠM THỦY LỢI & CÂN BẰNG</div>
+          <div style="font-family: var(--font-mono); font-size: 12px; display: flex; flex-direction: column; gap: 8px;">
+            <div>Mức nước bình: <strong id="val-water">78%</strong></div>
+            <div>Trạng thái bơm: <strong id="val-pump">[ OFF - ĐANG NGHỈ ]</strong></div>
+            <div>Góc nghiêng: <strong id="val-tilt">1.4° (Đứng vững)</strong></div>
+            <button onclick="setScenario('watering')" style="padding: 8px; margin-top: 6px;">[BẤM TƯỚI NGAY / DỪNG BƠM]</button>
+          </div>
+        </div>
+      </div>
+
+      <div style="display: grid; grid-template-rows: auto 1fr; gap: 10px;">
+        <div class="kpi-row">
+          <div class="kpi-card active-card" onclick="alert('Đổi biểu đồ sang Độ ẩm đất')">
+            <div style="font-family: var(--font-mono); font-size: 10px; font-weight: bold;">1. ĐỘ ẨM ĐẤT [▼ CHART]</div>
+            <div style="font-family: var(--font-mono); font-size: 24px; font-weight: bold; margin: 4px 0;" id="val-soil">62%</div>
+            <div style="font-size: 11px; color: #555;">Click xem lịch sử</div>
+          </div>
+          <div class="kpi-card" onclick="alert('Đổi biểu đồ sang Ánh sáng')">
+            <div style="font-family: var(--font-mono); font-size: 10px; font-weight: bold;">2. ÁNH SÁNG</div>
+            <div style="font-family: var(--font-mono); font-size: 24px; font-weight: bold; margin: 4px 0;" id="val-lux">450 Lux</div>
+            <div style="font-size: 11px; color: #555;">Click xem lịch sử</div>
+          </div>
+          <div class="kpi-card" onclick="alert('Đổi biểu đồ sang Nhiệt độ')">
+            <div style="font-family: var(--font-mono); font-size: 10px; font-weight: bold;">3. NHIỆT ĐỘ</div>
+            <div style="font-family: var(--font-mono); font-size: 24px; font-weight: bold; margin: 4px 0;" id="val-temp">27.4 °C</div>
+            <div style="font-size: 11px; color: #555;">Click xem lịch sử</div>
+          </div>
+          <div class="kpi-card" onclick="alert('Đổi biểu đồ sang Áp suất')">
+            <div style="font-family: var(--font-mono); font-size: 10px; font-weight: bold;">4. ÁP SUẤT KQ</div>
+            <div style="font-family: var(--font-mono); font-size: 24px; font-weight: bold; margin: 4px 0;" id="val-press">1008.5 hPa</div>
+            <div style="font-size: 11px; color: #555;">Click xem lịch sử</div>
+          </div>
+        </div>
+
+        <div class="panel">
+          <div class="panel-title">BIỂU ĐỒ LỊCH SỬ RỘNG RÃI (ĐÃ TÁCH LOG/JSON SANG TRANG 4)</div>
+          <div style="flex: 1; border: 1px solid #999; background: #fafafc; display: flex; align-items: center; justify-content: center; font-family: var(--font-mono);">
+            [KHU VỰC BIỂU ĐỒ LỊCH SỬ CHIẾM TOÀN BỘ KHÔNG GIAN DƯỚI]
+          </div>
+        </div>
+      </div>
+    </main>
+
+    <!-- TRANG 2: DATABASE -->
+    <main class="page-view" id="page-database">
+      <div class="panel">
+        <div class="panel-title">TRANG 2: KHO DỮ LIỆU SQLITE TOÀN MÀN HÌNH (plant_telemetry.db)</div>
+        <div class="code-box">ID | Timestamp           | Soil(%) | ADC  | Light(Lux) | Temp(C) | Press(hPa) | Water(%) | Emotion
+---+---------------------+---------+------+------------+---------+------------+----------+--------------
+120| 2026-11-13 15:12:00 |   62.0% | 1840 |   450.0    |  27.4   |   1008.5   |   78.0%  | HAPPY_IDLE
+119| 2026-11-13 14:10:00 |   74.0% | 1520 |   460.0    |  26.9   |   1008.0   |   52.0%  | WATERING_LOVE
+118| 2026-11-13 13:05:00 |   16.0% | 2690 |   920.0    |  33.2   |   1004.2   |   65.0%  | THIRSTY_HOT</div>
+      </div>
+    </main>
+
+    <!-- TRANG 3: CẤU HÌNH WI-FI & NẠP FIRMWARE -->
+    <main class="page-view two-col-grid" id="page-settings">
+      <div class="panel">
+        <div class="panel-title">1. CẤU HÌNH WI-FI & KẾT NỐI (MQTT / SERIAL)</div>
+        <div class="form-row"><span>Tên Wi-Fi (SSID):</span><input value="DuyTruong_IoT_2.4G" /></div>
+        <div class="form-row"><span>Mật khẩu Wi-Fi:</span><input type="password" value="12345678" /></div>
+        <div class="form-row"><span>MQTT Broker IP:</span><input value="192.168.1.105:1883" /></div>
+        <div class="form-row"><span>Cổng USB Serial:</span><input value="COM5 (921600)" /></div>
+        <button style="padding: 6px;">[Lưu & Gửi Cấu Hình Xuống ESP32]</button>
+      </div>
+
+      <div class="panel">
+        <div class="panel-title">2. NẠP FIRMWARE & CẬP NHẬT OTA (.BIN FLASHER)</div>
+        <div class="form-row"><span>Phiên bản hiện tại:</span><strong>v1.4.2-all-in-one</strong></div>
+        <div class="form-row"><span>Đường dẫn file .bin:</span><input value="d:/Plant/sensor/.pio/build/all_in_one/firmware.bin" /></div>
+        <div class="form-row"><span>Phương thức nạp:</span><strong>Wi-Fi OTA / USB UART</strong></div>
+        <button style="padding: 8px; background: #111; color: #fff;">[⚡ BẮT ĐẦU NẠP FIRMWARE XUỐNG ESP32]</button>
+      </div>
+
+      <div class="panel" style="grid-column: span 2;">
+        <div class="panel-title">3. HIỆU CHUẨN CẢM BIẾN (ADC ĐẤT KHÔ/ƯỚT & MPU-6050 ZERO CALIB)</div>
+        <div style="display: flex; gap: 12px; margin-top: 6px;">
+          <button style="padding: 8px;">[Hiệu chuẩn Đất Khô ('d' = 2850mV)]</button>
+          <button style="padding: 8px;">[Hiệu chuẩn Đất Ướt ('w' = 1250mV)]</button>
+          <button style="padding: 8px;">[Hiệu chuẩn Điểm 0 MPU-6050 ('c')]</button>
+        </div>
+      </div>
+    </main>
+
+    <!-- TRANG 4: DEBUG & SOI GÓI TIN JSON -->
+    <main class="page-view two-col-grid" id="page-debug">
+      <div class="panel" style="grid-column: span 2;">
+        <div class="panel-title">1. CHẨN ĐOÁN KỸ THUẬT CHI TIẾT (ĐÃ GIẤU KHỎI HEADER TRANG CHỦ)</div>
+        <div style="font-family: var(--font-mono); font-size: 12px; display: flex; justify-content: space-between; padding: 6px;">
+          <span id="dbg-state">Cờ trạng thái: RUNNING</span>
+          <span id="dbg-err">Mã lỗi Hex: 0x00 (NO_ERROR)</span>
+          <span id="dbg-rssi">Wi-Fi RSSI: -54 dBm (4/4 vạch)</span>
+          <span id="dbg-adc">Soil Raw ADC: 1840</span>
+          <span>Uptime: 04:12:39</span>
+        </div>
+      </div>
+
+      <div class="panel">
+        <div class="panel-title">2. NHẬT KÝ SỰ KIỆN & SQL LOG (EVENT LOG)</div>
+        <div class="code-box" id="dbg-log">[15:12:00] SYS : Hệ thống khởi động ổn định (State=RUNNING)
+[15:10:00] SQL : INSERT INTO telemetry_logs VALUES (...)</div>
+      </div>
+
+      <div class="panel">
+        <div class="panel-title">3. GÓI TIN JSON THÔ TỪ ESP32 (RAW JSON INSPECTOR)</div>
+        <div class="code-box" id="dbg-json"></div>
+      </div>
+    </main>
+  </div>
+
+  <script>
+    const SCENARIOS = {
+      normal: { state: "RUNNING", bars: 4, rssi: -54, err: "0x00 (NO_ERROR)", soil: 62, adc: 1840, lux: 450, temp: 27.4, press: 1008.5, water: 78, tilt: 1.4, eyes: "( ^ ‿ ^ )", emotion: "HAPPY_IDLE", speech: '"Đất đủ ẩm, nắng dịu nhẹ, tui đang rất yêu đời nha Sen ơi!"' },
+      dry: { state: "PENDING", bars: 3, rssi: -66, err: "0x01 (WARN_DRY)", soil: 16, adc: 2690, lux: 920, temp: 33.2, press: 1004.2, water: 65, tilt: 0.8, eyes: "( > _ < )", emotion: "THIRSTY_HOT", speech: '"Cổ họng khô queo (16%) lại còn nóng 33.2°C, chờ kích hoạt bơm..."' },
+      watering: { state: "PENDING", bars: 4, rssi: -56, err: "0x00 (PUMP_BUSY)", soil: 74, adc: 1520, lux: 460, temp: 26.9, press: 1008.0, water: 52, tilt: 1.1, eyes: "( ♥ ‿ ♥ )", emotion: "WATERING_LOVE", speech: '"Ực ực... Aaa mát quá, cảm ơn Sen nhiều nha!"' },
+      tilt: { state: "ERROR", bars: 2, rssi: -76, err: "0x04 (CRITICAL_TILT)", soil: 58, adc: 1890, lux: 390, temp: 27.5, press: 1007.8, water: 50, tilt: 54.6, eyes: "( @ _ @ )", emotion: "DIZZY_TILT", speech: '"Á á chậu cây nghiêng 54.6° rồi! Đỡ tui dậy kẻo đổ đất!"' },
+      empty_tank: { state: "ERROR", bars: 1, rssi: -86, err: "0x02 (ERR_EMPTY_TANK)", soil: 20, adc: 2610, lux: 25, temp: 25.2, press: 996.4, water: 0, tilt: 0.5, eyes: "( ° o ° )", emotion: "TANK_EMPTY", speech: '"Bình cạn sạch nước (0%) rồi! Bơm đã tự khóa chống cháy!"' }
+    };
+
+    function switchPage(pageKey) {
+      ["dashboard", "database", "settings", "debug"].forEach(k => {
+        document.getElementById("page-" + k).classList.toggle("active-page", k === pageKey);
+        document.getElementById("nav-" + k).classList.toggle("active", k === pageKey);
+      });
+      const titles = {
+        dashboard: "Trang 1: Tổng quan & Chăm sóc (Main Dashboard)",
+        database: "Trang 2: Kho Dữ liệu Lịch sử (SQLite Database Explorer)",
+        settings: "Trang 3: Cấu hình Wi-Fi, Hiệu chuẩn & Nạp Firmware",
+        debug: "Trang 4: Chẩn đoán Kỹ thuật & Soi Gói Tin JSON (Debug Console)"
+      };
+      document.getElementById("page-title").innerText = titles[pageKey];
+    }
+
+    function setScenario(key, btn) {
+      if (btn) {
+        document.querySelectorAll(".sim-bar button").forEach(b => b.classList.remove("active"));
+        btn.classList.add("active");
+      }
+      const d = SCENARIOS[key];
+
+      // Cập nhật Đèn trạng thái
+      const pill = document.getElementById("pill-led");
+      const dot = document.getElementById("led-dot");
+      document.getElementById("led-text").innerText = d.state;
+      pill.classList.toggle("error-mode", d.state === "ERROR");
+      dot.className = "led-dot" + (d.state === "PENDING" ? " pending" : "");
+
+      // Cập nhật 4 vạch sóng Wi-Fi
+      const bars = document.querySelectorAll("#wifi-bars span");
+      bars.forEach((b, idx) => b.classList.toggle("on", idx < d.bars));
+
+      // Cập nhật Dashboard
+      document.getElementById("val-eyes").innerText = d.eyes;
+      document.getElementById("val-emotion").innerText = "STATE: " + d.emotion;
+      document.getElementById("val-speech").innerText = d.speech;
+      document.getElementById("val-soil").innerText = d.soil + "%";
+      document.getElementById("val-lux").innerText = d.lux + " Lux";
+      document.getElementById("val-temp").innerText = d.temp + " °C";
+      document.getElementById("val-press").innerText = d.press + " hPa";
+      document.getElementById("val-water").innerText = d.water + "%";
+      document.getElementById("val-tilt").innerText = d.tilt + "°";
+
+      // Cập nhật trang Debug
+      document.getElementById("dbg-state").innerText = "Cờ trạng thái: " + d.state;
+      document.getElementById("dbg-err").innerText = "Mã lỗi Hex: " + d.err;
+      document.getElementById("dbg-rssi").innerText = `Wi-Fi RSSI: ${d.rssi} dBm (${d.bars}/4 vạch)`;
+      document.getElementById("dbg-adc").innerText = "Soil Raw ADC: " + d.adc;
+      document.getElementById("dbg-json").innerText = JSON.stringify(d, null, 2);
+    }
+
+    setScenario("normal");
+  </script>
+</body>
+</html>

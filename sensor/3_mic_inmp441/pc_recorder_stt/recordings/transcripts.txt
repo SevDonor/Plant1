@@ -1,0 +1,4 @@
+[2026-11-13 14:27:41] File: rec_20261113_142739.wav | Lang: vi-VN | RMS: 12910 | Peak: 32915 | Text: alo 1234 alo 1234 alo 1234 alo 1234 Tôi
+[2026-11-13 14:30:16] File: rec_20261113_143015.wav | Lang: vi-VN | RMS: 15851 | Peak: 33010 | Text: (Không nhận diện được)
+[2026-11-13 14:31:06] File: rec_20261113_143105.wav | Lang: vi-VN | RMS: 23993 | Peak: 32872 | Text: test micro 1 2 3 4 test micro 1 2 3 4 test micro
+[2026-11-13 14:46:11] File: rec_20261113_144610.wav | Lang: vi-VN | RMS: 4814 | Peak: 31753 | Text: (Không nhận diện được)
