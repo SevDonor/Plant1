@@ -7,15 +7,15 @@ Tài liệu này tổng hợp các ý tưởng kết hợp hệ thống cảm bi
 ## 1. Hệ thống "Tâm sinh lý" (Biological & Emotional State Machine)
 Chuyển hóa các thông số kỹ thuật khô khan từ cảm biến thành trạng thái cảm xúc trên màn hình **OLED SSD1309** và giọng nói qua loa **MAX98357A**:
 
-| Cảm biến | Trạng thái môi trường | Biểu cảm OLED | Phản ứng / Lời thoại mẫu |
-| :--- | :--- | :--- | :--- |
-| **AHT20 + BH1750** | Nóng (> 32°C) hoặc nắng gắt | Toát mồ hôi `(；´д｀)ゞ` | *"Nắng cháy lá rồi sen ơi, dời em vào chỗ mát với!"* |
-| **BH1750** | Tắt đèn / Trời tối (< 10 lux) | Nhắm mắt ngủ `( - . - ) zzz` | Thầm thì hoặc càu nhàu nhẹ nếu bị gọi dậy lúc đêm khuya. |
-| **BH1750** | Sáng sớm (Ánh sáng tăng dần) | Vươn vai, mắt lấp lánh `( *‿* )` | Tự động chào buổi sáng và báo nhiệt độ trong ngày. |
-| **Độ ẩm đất** | Đất khô (< 20%) | Khát khô, nhăn nhó `( >_< )` | *"Cổ họng em khô queo rồi, cho em xin một ngụm nước đi mà!"* |
-| **Độ ẩm đất + Bơm** | Đang được tưới nước | Mắt trái tim `( ♥‿♥ )` | Phát tiếng "ực ực" sảng khoái: *"Aaa mát quá, cảm ơn sen!"* |
-| **XKC Y25 V** | Bình trữ hết nước | Ngạc nhiên / Báo động `( °o° )` | *"Bình nước cạn đáy rồi kìa, nhớ châm thêm nước cho em nhé!"* |
-| **BMP280** | Áp suất khí quyển tụt nhanh | Lo lắng / Nhìn mây mưa | *"Trời sắp đổ mưa dông đấy, bạn đã đóng cửa sổ hay cất đồ chưa?"* |
+| Cảm biến            | Trạng thái môi trường         | Biểu cảm OLED                    | Phản ứng / Lời thoại mẫu                                          |
+| :------------------ | :---------------------------- | :------------------------------- | :---------------------------------------------------------------- |
+| **AHT20 + BH1750**  | Nóng (> 32°C) hoặc nắng gắt   | Toát mồ hôi `(；´д｀)ゞ`            | *"Nắng cháy lá rồi sen ơi, dời em vào chỗ mát với!"*              |
+| **BH1750**          | Tắt đèn / Trời tối (< 10 lux) | Nhắm mắt ngủ `( - . - ) zzz`     | Thầm thì hoặc càu nhàu nhẹ nếu bị gọi dậy lúc đêm khuya.          |
+| **BH1750**          | Sáng sớm (Ánh sáng tăng dần)  | Vươn vai, mắt lấp lánh `( *‿* )` | Tự động chào buổi sáng và báo nhiệt độ trong ngày.                |
+| **Độ ẩm đất**       | Đất khô (< 20%)               | Khát khô, nhăn nhó `( >_< )`     | *"Cổ họng em khô queo rồi, cho em xin một ngụm nước đi mà!"*      |
+| **Độ ẩm đất + Bơm** | Đang được tưới nước           | Mắt trái tim `( ♥‿♥ )`           | Phát tiếng "ực ực" sảng khoái: *"Aaa mát quá, cảm ơn sen!"*       |
+| **XKC Y25 V**       | Bình trữ hết nước             | Ngạc nhiên / Báo động `( °o° )`  | *"Bình nước cạn đáy rồi kìa, nhớ châm thêm nước cho em nhé!"*     |
+| **BMP280**          | Áp suất khí quyển tụt nhanh   | Lo lắng / Nhìn mây mưa           | *"Trời sắp đổ mưa dông đấy, bạn đã đóng cửa sổ hay cất đồ chưa?"* |
 
 ---
 
